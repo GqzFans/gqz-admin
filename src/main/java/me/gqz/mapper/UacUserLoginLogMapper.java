@@ -1,0 +1,13 @@
+package me.gqz.mapper;
+
+import me.gqz.config.MyMapper;
+import me.gqz.domain.UacUserLoginLog;
+
+/**
+ * <p>Title: UacUserLoginLogMapper. </p>
+ * <p>Description 用户账户中心登录系统日志Mapper </p>
+ * @author dragon
+ * @date 2018/4/8 下午2:45
+ */
+public interface UacUserLoginLogMapper extends MyMapper<UacUserLoginLog> {
+}
