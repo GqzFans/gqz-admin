@@ -22,3 +22,7 @@ logs
 *.iws
 mvn*
 .apt_generated/
+
+# important files
+src/main/resources/application-local.yml
+src/test/
