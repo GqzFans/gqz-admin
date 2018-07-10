@@ -53,6 +53,13 @@ public class UacUser implements Serializable {
     private String loginPwd;
 
     /**
+     * 昵称
+     */
+    @ApiModelProperty(value = "昵称")
+    @Column(name = "nick_name")
+    private String nickName;
+
+    /**
      * 用户状态
      */
     @ApiModelProperty(value = "用户状态")

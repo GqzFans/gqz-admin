@@ -39,6 +39,10 @@ public enum UacExceptionEnums {
         return msg;
     }
 
+    public String errorMsg() {
+        return errorMsg;
+    }
+
     public String code() {
         return this.name();
     }

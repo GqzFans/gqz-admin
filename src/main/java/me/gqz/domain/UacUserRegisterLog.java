@@ -62,4 +62,11 @@ public class UacUserRegisterLog implements Serializable {
     @DateTimeFormat(pattern="yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date registerTime;
+
+    /**
+     * 电子邮箱
+     */
+    @ApiModelProperty(value = "电子邮箱")
+    @Column(name = "mail")
+    private String mail;
 }

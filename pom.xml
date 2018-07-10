@@ -132,6 +132,12 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
+    <!-- email -->
+    <dependency>
+      <groupId>io.github.biezhi</groupId>
+      <artifactId>oh-my-email</artifactId>
+      <version>0.0.3</version>
+    </dependency>
     <!-- core-jar -->
     <dependency>
       <groupId>org.codehaus.jackson</groupId>

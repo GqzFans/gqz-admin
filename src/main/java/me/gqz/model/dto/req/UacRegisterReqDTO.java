@@ -40,6 +40,20 @@ public class UacRegisterReqDTO implements Serializable {
     private String confirmPwd;
 
     /**
+     * 昵称
+     */
+    @ApiModelProperty(value = "昵称")
+    @NotBlank(message = "昵称不能为空")
+    private String nickName;
+
+    /**
+     * 电子邮箱
+     */
+    @ApiModelProperty(value = "电子邮箱")
+    @NotBlank(message = "电子邮箱不能为空")
+    private String mail;
+
+    /**
      * 系统标识
      */
     @ApiModelProperty(value = "系统标识")

@@ -53,6 +53,7 @@ public class UacRegisterServiceImpl implements UacRegisterService {
         UacUser uacUser = new UacUser();
         uacUser.setLoginName(uacRegisterReqDTO.getLoginName());
         uacUser.setLoginPwd(PasswordUtils.encodeByAES(uacRegisterReqDTO.getLoginPwd()));
+        uacUser.setNickName(uacRegisterReqDTO.getNickName());
         uacUser.setSerialNo(userId);
         uacUser.setUserStatus(SystemBaseConstants.Y);
         uacUser.setCreatedTime(nowDate);
@@ -64,6 +65,7 @@ public class UacRegisterServiceImpl implements UacRegisterService {
         uacUserRegisterLog.setSystemId(uacRegisterReqDTO.getSystemId());
         uacUserRegisterLog.setRegisterTime(nowDate);
         uacUserRegisterLog.setRegisterIp(RequestUtil.getRequest().getRemoteAddr());
+        uacUserRegisterLog.setMail(uacRegisterReqDTO.getMail());
         uacUserRegisterLogMapper.insert(uacUserRegisterLog);
         return insertUacUserCount;
     }

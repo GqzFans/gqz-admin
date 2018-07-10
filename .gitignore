@@ -26,3 +26,4 @@ mvn*
 # important files
 src/main/resources/application-local.yml
 src/test/
+/src/main/resources/application-local.yml
