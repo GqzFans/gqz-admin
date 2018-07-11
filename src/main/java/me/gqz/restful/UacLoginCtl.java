@@ -62,13 +62,13 @@ public class UacLoginCtl extends BaseController {
             }
             String secretToken = redisOperationUtils.getKey(UacTokenConstants.SECRET_TOKEN);
             if (CommUsualUtils.isSEmptyOrNull(secretToken)) {
-                throw new BusinessException(UacExceptionEnums.UAC_TOKEN_ERROR_10002.code(), UacExceptionEnums.UAC_TOKEN_ERROR_10002.msg());
+                throw new BusinessException(UacExceptionEnums.UAC_TOKEN_ERROR_10002.code(), UacExceptionEnums.UAC_TOKEN_ERROR_10002.errorMsg());
             }
             uacLoginReqDTO.setSecretToken(secretToken);
             uacLoginReqDTO.setTokenKey(getPrivateTokenKey());
             uacLoginResDTO = uacLoginService.doLogin(uacLoginReqDTO);
             if (CommUsualUtils.isOEmptyOrNull(uacLoginResDTO)) {
-                throw new BusinessException(UacExceptionEnums.UAC_LOGIN_ERROR_10003.code(), UacExceptionEnums.UAC_LOGIN_ERROR_10003.msg());
+                throw new BusinessException(UacExceptionEnums.UAC_LOGIN_ERROR_10003.code(), UacExceptionEnums.UAC_LOGIN_ERROR_10003.errorMsg());
             }
         } catch (BusinessException e) {
             log.error("用户账户中心登录接口, 出现异常={}", e.getMessage(), e);

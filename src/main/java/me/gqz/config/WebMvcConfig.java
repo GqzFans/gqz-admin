@@ -1,12 +1,10 @@
 package me.gqz.config;
 
 import me.gqz.interceptor.AuthInterceptor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -21,6 +19,8 @@ import javax.annotation.Resource;
 @Import(SwaggerConfig.class)
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
+	@Value("${swagger.enabled}")
+	private boolean swaggerEnabled;
 	@Resource
 	private AuthInterceptor authInterceptor;
 
@@ -36,7 +36,19 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		// addPathPatterns 用于添加拦截规则
 		// excludePathPatterns 用户排除拦截
 		super.addInterceptors(registry);
-		registry.addInterceptor(authInterceptor).addPathPatterns("/api/gqz/**");
+		InterceptorRegistration addInterceptor = registry
+				.addInterceptor(authInterceptor);
+		// 拦截规则
+		addInterceptor.addPathPatterns("/**");
+		addInterceptor.excludePathPatterns("/api/uac/**");
+		if (swaggerEnabled) {
+			addInterceptor.excludePathPatterns("/swagger-resources");
+			addInterceptor
+					.excludePathPatterns("/swagger-resources/configuration/ui");
+			addInterceptor.excludePathPatterns(
+					"/swagger-resources/configuration/security");
+			addInterceptor.excludePathPatterns("/v2/api-docs");
+		}
 	}
 
 }

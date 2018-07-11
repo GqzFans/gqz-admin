@@ -69,6 +69,7 @@ public class UacLoginServiceImpl implements UacLoginService {
         if (!CommUsualUtils.isOEmptyOrNull(uacUser)) {
             String userId = uacUser.getId();
             String serialNo = uacUser.getSerialNo();
+            String nickName = uacUser.getNickName();
             loginName = uacUser.getLoginName();
             // 插入用户日志表
             insertUserLoginLog(userId, uacLoginReqDTO);
@@ -77,6 +78,7 @@ public class UacLoginServiceImpl implements UacLoginService {
             uacLoginResDTO.setId(userId);
             uacLoginResDTO.setSerialNo(serialNo);
             uacLoginResDTO.setLoginName(loginName);
+            uacLoginResDTO.setNickName(nickName);
             // 获取TOKEN
             uacLoginResDTO.setToken(getToken(uacUser));
             return uacLoginResDTO;

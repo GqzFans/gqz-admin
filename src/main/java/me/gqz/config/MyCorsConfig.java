@@ -15,7 +15,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 @Configuration
 public class MyCorsConfig {
 
-
     /**
      * <p>addMapping 接口格式 </p>
      * <p>allowedOrigins 允许跨域的请求地址 </p>
@@ -25,7 +24,7 @@ public class MyCorsConfig {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/api/**").allowedOrigins();
+                registry.addMapping("/api/**").allowedOrigins("*");
             }
         };
     }

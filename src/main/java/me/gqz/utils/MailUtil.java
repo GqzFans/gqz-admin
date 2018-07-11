@@ -2,11 +2,6 @@ package me.gqz.utils;
 
 import io.github.biezhi.ome.OhMyEmail;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
 import javax.mail.MessagingException;
 import java.io.*;
 import java.util.Properties;
@@ -48,6 +43,7 @@ public class MailUtil {
             properties.load(in);
             String mailUrl = properties.getProperty("mail.url");
             String mailPwd = properties.getProperty("mail.pwd");
+            // 注意，此处密码为POP3/SMTP服务授权码
             OhMyEmail.config(OhMyEmail.SMTP_163(true), mailUrl, mailPwd);
             OhMyEmail.subject("欢迎加入高秋梓资源组！").from("高秋梓资源组").to(toMail)
                     .text("欢迎" + nickName + "加入资源组！\n您的登录名为【" + loginName + "】 系统自动生成您的密码为【" + loginPwd + "】 请您妥善保管。").send();

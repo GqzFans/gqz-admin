@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.gqz.annotation.BusinessLog;
 import me.gqz.constant.UacTokenConstants;
 import me.gqz.core.exception.BusinessException;
+import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.core.utils.CommUsualUtils;
 import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
@@ -15,6 +16,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -99,6 +101,24 @@ public class UacTokenCtl extends BaseController {
             return WrapMapper.error();
         }
         return result;
+    }
+
+    /**
+     * <p>Title: getTokenAgain. </p>
+     * <p>重新生成TOKEN </p>
+     * @author dragon
+     * @date 2018/7/11 下午3:37
+     * @return token
+     */
+    @BusinessLog(logInfo = "重新生成TOKEN")
+    @ResponseBody
+    @RequestMapping(value = "/getTokenAgain", method = RequestMethod.POST)
+    @ApiOperation(notes = "重新生成TOKEN", httpMethod = "POST", value = "重新生成TOKEN返回")
+    public Wrapper<String> getTokenAgain(){
+        AuthUserDTO authUserDTO = getAuthUserByToken();
+        String token = uacTokenService.encodeToken(authUserDTO);
+        log.info("重新生成TOKEN -> token={}", token);
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, token);
     }
 
 }

@@ -33,6 +33,12 @@ public class UacLoginResDTO implements Serializable {
     private String loginName;
 
     /**
+     * 昵称
+     */
+    @ApiModelProperty(value = "昵称")
+    private String nickName;
+
+    /**
      * TOKEN
      */
     @ApiModelProperty(value = "TOKEN")

@@ -24,6 +24,7 @@ mvn*
 .apt_generated/
 
 # important files
+cfg.properties
+application-local.yml
+src/main/resources/cfg.properties
 src/main/resources/application-local.yml
-src/test/
-/src/main/resources/application-local.yml
