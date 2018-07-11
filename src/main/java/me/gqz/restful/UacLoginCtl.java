@@ -8,6 +8,7 @@ import me.gqz.annotation.BusinessLog;
 import me.gqz.annotation.PrintParam;
 import me.gqz.constant.UacTokenConstants;
 import me.gqz.core.exception.BusinessException;
+import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.core.utils.CommUsualUtils;
 import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
@@ -21,6 +22,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 
 /**
  * <p>Title: UacLoginCtl. </p>
@@ -109,5 +112,35 @@ public class UacLoginCtl extends BaseController {
             throw new BusinessException("TokenKey为空");
         }
         redisOperationUtils.set(UacTokenConstants.TOKEN_KEY, PasswordUtils.encodeByAES(tokenKey));
+    }
+
+    /**
+     * <p>Title: logout. </p>
+     * <p>用户登出接口 </p>
+     * @param request
+     * @author dragon
+     * @date 2018/7/11 下午5:37
+     * @return boolean
+     */
+    @BusinessLog(logInfo = "用户登出接口")
+    @ResponseBody
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @ApiOperation(notes = "用户登出接口", httpMethod = "POST", value = "登出接口")
+    public Wrapper<Boolean> logout(HttpServletRequest request) throws Exception {
+        String userName;
+        try {
+            String token = (String) request.getSession().getAttribute("token");
+            AuthUserDTO authUserDTO = getAuthUserByToken();
+            userName = authUserDTO.getUserName();
+            log.error("登出成功！用户=[{}]", userName);
+            if (CommUsualUtils.isSEmptyOrNull(token)) {
+                log.info("登出用户，获取到TOKEN为，准备清空TOKEN = {}", token);
+                request.getSession().removeAttribute("token");
+            }
+        } catch (Exception ex) {
+            log.error("用户登录, 出现异常={}", ex.getMessage(), ex);
+            return WrapMapper.error();
+        }
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, true);
     }
 }

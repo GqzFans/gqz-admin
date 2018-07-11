@@ -27,7 +27,7 @@ import java.io.IOException;
 @Service
 public class AuthInterceptor implements HandlerInterceptor {
 
-    private transient static final String AUTH = "/auth/";
+    private transient static final String TOKEN = "/token/";
     private transient static final String OPTIONS = "OPTIONS";
     private static final String ERRORMSG = "{\"code\":403 ,\"message\" :\"NOT AUTHORIZATION\"}";
     private static final String BEARER = "Bearer ";
@@ -40,8 +40,8 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        // 登录注册跳过拦截
-        if (request.getRequestURL().toString().contains(AUTH)) {
+        // TOKEN跳过拦截
+        if (request.getRequestURL().toString().contains(TOKEN)) {
             return true;
         }
         // 预请求跳过拦截，判断跨域

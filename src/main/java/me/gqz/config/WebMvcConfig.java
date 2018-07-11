@@ -40,7 +40,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 				.addInterceptor(authInterceptor);
 		// 拦截规则
 		addInterceptor.addPathPatterns("/**");
-		addInterceptor.excludePathPatterns("/api/uac/**");
+		addInterceptor.excludePathPatterns("/api/uac/auth/token/**");
 		if (swaggerEnabled) {
 			addInterceptor.excludePathPatterns("/swagger-resources");
 			addInterceptor
