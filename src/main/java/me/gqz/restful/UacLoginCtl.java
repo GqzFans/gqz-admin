@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Date;
 
 /**
@@ -127,16 +128,11 @@ public class UacLoginCtl extends BaseController {
     @RequestMapping(value = "/logout", method = RequestMethod.POST)
     @ApiOperation(notes = "用户登出接口", httpMethod = "POST", value = "登出接口")
     public Wrapper<Boolean> logout(HttpServletRequest request) throws Exception {
-        String userName;
         try {
-            String token = (String) request.getSession().getAttribute("token");
             AuthUserDTO authUserDTO = getAuthUserByToken();
-            userName = authUserDTO.getUserName();
-            log.error("登出成功！用户=[{}]", userName);
-            if (CommUsualUtils.isSEmptyOrNull(token)) {
-                log.info("登出用户，获取到TOKEN为，准备清空TOKEN = {}", token);
-                request.getSession().removeAttribute("token");
-            }
+            String userId = authUserDTO.getUserName();
+            log.warn("登出成功！用户ID=[{}]", userId);
+            // TODO 登出记录日志?目前互联网环境是否需要记录
         } catch (Exception ex) {
             log.error("用户登录, 出现异常={}", ex.getMessage(), ex);
             return WrapMapper.error();

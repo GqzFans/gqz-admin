@@ -1,6 +1,7 @@
 package me.gqz.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import me.gqz.constant.SystemBaseConstants;
 import me.gqz.constant.UacTokenConstants;
 import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.core.utils.CommUsualUtils;
@@ -64,6 +65,7 @@ public class UacLoginServiceImpl implements UacLoginService {
         UacUser uacUser = new UacUser();
         uacUser.setLoginName(loginName);
         uacUser.setLoginPwd(loginPwd);
+        uacUser.setUserStatus(SystemBaseConstants.Y);
         // 查询UAC数据库是否数据吻合
         uacUser = uacDoLogin(uacUser);
         if (!CommUsualUtils.isOEmptyOrNull(uacUser)) {
@@ -140,7 +142,7 @@ public class UacLoginServiceImpl implements UacLoginService {
         if (!CommUsualUtils.isOEmptyOrNull(uacUser)) {
             log.info("用户登录：获取登录信息 = {}", uacUser.toString());
         } else {
-            log.error("用户登录失败：无此用户信息");
+            log.error("用户登录失败：无此用户信息或此用户已被停用");
         }
         return uacUser;
     }
