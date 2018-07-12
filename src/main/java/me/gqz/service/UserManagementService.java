@@ -1,22 +1,18 @@
-package me.gqz.mapper;
+package me.gqz.service;
 
-
-import me.gqz.config.MyMapper;
 import me.gqz.domain.UacUser;
 import me.gqz.model.dto.req.DropUserReqDTO;
 import me.gqz.model.vo.UserListVO;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
- * <p>Title: UacUserMapper. </p>
- * <p>Description 用户账户信息Mapper </p>
+ * <p>Title: UserManagementService. </p>
+ * <p>Description 用户管理-用户信息Service </p>
  * @author dragon
- * @date 2018/4/4 下午7:02
+ * @date 2018/7/12 下午3:00
  */
-@Repository
-public interface UacUserMapper extends MyMapper<UacUser> {
+public interface UserManagementService extends IService<UacUser> {
     /**
      * <p>Title: queryUserList. </p>
      * <p>用户管理分页列表查询 </p>
@@ -32,7 +28,7 @@ public interface UacUserMapper extends MyMapper<UacUser> {
      * @param dropUserReqDTO
      * @author dragon
      * @date 2018/7/12 下午4:29
-     * @return Integer
+     * @return Boolean
      */
-    Integer dropUserById(DropUserReqDTO dropUserReqDTO);
+    Boolean dropUserById(DropUserReqDTO dropUserReqDTO);
 }
