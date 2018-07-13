@@ -114,10 +114,16 @@ public class UacTokenCtl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/getTokenAgain", method = RequestMethod.POST)
     @ApiOperation(notes = "重新生成TOKEN", httpMethod = "POST", value = "重新生成TOKEN返回")
-    public Wrapper<String> getTokenAgain(){
-        AuthUserDTO authUserDTO = getAuthUserByToken();
-        String token = uacTokenService.encodeToken(authUserDTO);
-        log.info("重新生成TOKEN -> token={}", token);
+    public Wrapper<String> getTokenAgain() {
+        String token = null;
+        try {
+            AuthUserDTO authUserDTO = getAuthUserByToken();
+            token = uacTokenService.encodeToken(authUserDTO);
+            log.info("重新生成TOKEN -> token={}", token);
+        } catch (BusinessException e) {
+            log.error("重新生成TOKEN失败，强制用户退出：{}", e);
+            return WrapMapper.error();
+        }
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, token);
     }
 

@@ -45,6 +45,9 @@ public class UacRegisterServiceImpl implements UacRegisterService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Integer doRegister(UacRegisterReqDTO uacRegisterReqDTO) {
+        if (!uacRegisterReqDTO.getLoginPwd().equals(uacRegisterReqDTO.getConfirmPwd())) {
+            throw new BusinessException(UacExceptionEnums.UAC_REGISTER_ERROR_10108.code(), UacExceptionEnums.UAC_REGISTER_ERROR_10108.errorMsg());
+        }
         validateRegisterInfo(uacRegisterReqDTO);
         // Redis生成唯一用户ID
         String userId = redisUtils.getUserSerialNo();
@@ -82,7 +85,7 @@ public class UacRegisterServiceImpl implements UacRegisterService {
         uacUser.setLoginName(loginName);
         int userCount = uacUserMapper.selectCount(uacUser);
         if (userCount > 0) {
-            throw new BusinessException(UacExceptionEnums.UAC_REGISTER_ERROR_10007.code(), UacExceptionEnums.UAC_REGISTER_ERROR_10007.msg());
+            throw new BusinessException(UacExceptionEnums.UAC_REGISTER_ERROR_10007.code(), UacExceptionEnums.UAC_REGISTER_ERROR_10007.errorMsg());
         }
     }
 }

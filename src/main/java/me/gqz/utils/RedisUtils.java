@@ -21,6 +21,16 @@ public class RedisUtils {
     @Autowired
     private StringRedisTemplate rt;
 
+    /**
+     * <p>Title: getNowCode. </p>
+     * <p>获取最新code </p>
+     * @param envLock
+     * @param prefix
+     * @param prefixLen
+     * @author dragon
+     * @date 2018/7/13 下午3:23
+     * @return str
+     */
     public String getNowCode(String envLock, String prefix, int prefixLen) {
         SimpleDateFormat df = new SimpleDateFormat("yyMMdd");
         String dateStr = df.format(new Date());

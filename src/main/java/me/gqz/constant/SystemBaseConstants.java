@@ -10,4 +10,6 @@ public class SystemBaseConstants {
     public static final String Y = "1";
     public static final String N = "2";
     public static final Integer VERSION_INIT = 0;
+    // UNDER_LINE
+    public static final String UNDER_LINE = "_";
 }
