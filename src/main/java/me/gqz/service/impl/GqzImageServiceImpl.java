@@ -7,6 +7,7 @@ import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.domain.GqzAppImage;
 import me.gqz.mapper.GqzAppImageMapper;
 import me.gqz.model.dto.req.InsertGqzImageReqDTO;
+import me.gqz.model.dto.req.QueryGqzImageReqDTO;
 import me.gqz.service.GqzImageService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,5 +69,18 @@ public class GqzImageServiceImpl implements GqzImageService {
         } else {
             throw new BusinessException("保存图片信息出错");
         }
+    }
+
+    /**
+     * <p>Title: queryGqzImageList. </p>
+     * <p>图片管理分页列表查询 </p>
+     * @param param
+     * @author dragon
+     * @date 2018/7/14 下午11:33
+     * @return List<GqzAppImage>
+     */
+    @Override
+    public List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param) {
+        return appImageMapper.queryGqzImageList(param);
     }
 }

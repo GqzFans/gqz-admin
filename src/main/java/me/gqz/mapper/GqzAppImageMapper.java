@@ -2,6 +2,7 @@ package me.gqz.mapper;
 
 import me.gqz.config.MyMapper;
 import me.gqz.domain.GqzAppImage;
+import me.gqz.model.dto.req.QueryGqzImageReqDTO;
 
 import java.util.List;
 
@@ -21,4 +22,14 @@ public interface GqzAppImageMapper extends MyMapper<GqzAppImage> {
      * @return count
      */
     Integer addGqzImage(List<GqzAppImage> imageList);
+
+    /**
+     * <p>Title: queryGqzImageList. </p>
+     * <p>图片管理分页列表查询 </p>
+     * @param param
+     * @author dragon
+     * @date 2018/7/14 下午11:33
+     * @return List<GqzAppImage>
+     */
+    List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param);
 }

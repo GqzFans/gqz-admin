@@ -1,7 +1,11 @@
 package me.gqz.service;
 
 import me.gqz.core.model.dto.AuthUserDTO;
+import me.gqz.domain.GqzAppImage;
 import me.gqz.model.dto.req.InsertGqzImageReqDTO;
+import me.gqz.model.dto.req.QueryGqzImageReqDTO;
+
+import java.util.List;
 
 /**
  * <p>Title: GqzImageService. </p>
@@ -20,4 +24,14 @@ public interface GqzImageService {
      * @return boolean
      */
     Boolean addGqzImage(InsertGqzImageReqDTO insertGqzImageReqDTO, AuthUserDTO authUser);
+
+    /**
+     * <p>Title: queryGqzImageList. </p>
+     * <p>图片管理分页列表查询 </p>
+     * @param param
+     * @author dragon
+     * @date 2018/7/14 下午11:33
+     * @return List<GqzAppImage>
+     */
+    List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param);
 }

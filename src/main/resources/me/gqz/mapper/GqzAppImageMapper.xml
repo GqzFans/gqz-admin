@@ -20,4 +20,24 @@
       #{item.imageStatus})
     </foreach>
   </insert>
+
+  <select id="queryGqzImageList" parameterType="me.gqz.model.dto.req.QueryGqzImageReqDTO"
+          resultType="me.gqz.domain.GqzAppImage">
+    SELECT
+    id, image_url, image_description, create_user_name, create_time, image_status
+    FROM
+    gqz_app_image
+    WHERE
+    1=1
+    <if test="beginDate !=null and beginDate !=''">
+      AND create_time <![CDATA[ >= ]]> #{beginDate}
+    </if>
+    <if test="endDate !=null and endDate !=''">
+      AND create_time <![CDATA[ <= ]]> #{endDate}
+    </if>
+    <if test="createUserName !=null and createUserName !=''">
+      AND create_user_name LIKE concat('%',#{createUserName},'%')
+    </if>
+    ORDER BY create_time DESC
+  </select>
 </mapper>
