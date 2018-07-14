@@ -1,12 +1,12 @@
 package me.gqz.constant;
 
 /**
- * <p>Title: ContextTypeConstant. </p>
- * <p>Description ContextTypeConstant </p>
+ * <p>Title: ContextTypeConstants. </p>
+ * <p>Description ContextTypeConstants </p>
  * @author dragon
  * @date 2018/7/13 下午3:00
  */
-public class ContextTypeConstant {
+public class ContextTypeConstants {
     public static final String IMAGE_BMP = "image/bmp";
     public static final String IMAGE_JPEG = "image/jpeg";
     public static final String IMAGE_GIF = "image/gif";

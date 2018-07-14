@@ -4,8 +4,10 @@ import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.model.ObjectMetadata;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.config.OssConfig;
+import me.gqz.constant.HttpSchema;
 import me.gqz.constant.SystemBaseConstants;
 import me.gqz.core.exception.BusinessException;
 import me.gqz.core.utils.CommUsualUtils;
@@ -19,10 +21,8 @@ import me.gqz.utils.ContextTypeUtils;
 import me.gqz.utils.RedisUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.springframework.stereotype.Service;
-
 import javax.annotation.Resource;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Date;
 
 /**
@@ -40,8 +40,14 @@ public class OssServiceImpl implements OssService {
     @Resource
     private RedisUtils redisUtils;
 
-    // 图片业务序列号Redis锁
+    /**
+     * 图片业务序列号Redis锁
+     */
     private static final String ENV_IMG_LOCK = "GQZ_IMAGE";
+    /**
+     * 图片是否需要授权
+     */
+    private static final Boolean EXPIRATION = false;
 
     /**
      * <p>Title: uploadImage. </p>
@@ -91,19 +97,23 @@ public class OssServiceImpl implements OssService {
             log.info("ossFilePath = {}", ossFilePath);
             log.info("fileName = {}", fileName);
             ossClient.putObject(ossConfig.getBucketName(), ossFilePath + fileName, inputStream, objectMetadata);
+            // 上传真实地址
+            String netUrl = "";
             // OSS授权访问
-            Date expiration = DateUtils.addHours(new Date(), ossConfig.getDelayHour());
-            GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getBucketName(), filePath, HttpMethod.GET);
-            // 设置访问时效 -> 此处有疑问，Bucket公共读是否需要设置时效？
-            request.setExpiration(expiration);
-            String signedUrl = ossClient.generatePresignedUrl(request).toString();
-            System.out.println("signedUrl = " + signedUrl);
+            if (EXPIRATION) {
+                Date expiration = DateUtils.addHours(new Date(), ossConfig.getDelayHour());
+                GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(ossConfig.getBucketName(), filePath, HttpMethod.GET);
+                // 设置访问时效 -> 此处有疑问，Bucket公共读是否需要设置时效？
+                request.setExpiration(expiration);
+                netUrl = ossClient.generatePresignedUrl(request).toString();
+            }
+            // OSS非授权时，拼接地址
+            netUrl = HttpSchema.HTTPS + ossConfig.getBucket() + SystemBaseConstants.FORWARD_SLASH + ossFilePath + fileName;
             attachment.setAttachmentName(fileName);
             attachment.setAttachmentCode(serialNo);
-            attachment.setAttachmentUrl(ossFilePath);
+            attachment.setAttachmentUrl(netUrl);
             attachment.setType(fileType);
-            log.info("==> 上传文件成功 fileName={}", ossFilePath + fileName);
-
+            log.info("==> 上传文件成功 netUrl={}", netUrl);
         } catch (Exception e) {
             e.printStackTrace();
             log.error("==> 上传文件失败={}", e.getMessage(), e);

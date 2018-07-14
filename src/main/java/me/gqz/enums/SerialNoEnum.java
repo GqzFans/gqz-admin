@@ -11,7 +11,7 @@ public enum SerialNoEnum {
     /**
      * 图片
      */
-    GQZ_IMAGE("GQZ_IMAGE_", "附件流水号", 6);
+    GQZ_IMAGE("GQZ_IMAGE_", "附件流水号", 4);
 
     String type;
     String name;
