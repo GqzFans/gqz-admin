@@ -8,14 +8,14 @@ import java.io.Serializable;
 
 
 /**
- * <p>Title: AttachmentReqDTO. </p>
+ * <p>Title: AttachmentResDTO. </p>
  * <p>Description 上传附件回传DTO </p>
  * @author dragon
  * @date 2018/7/13 下午2:42
  */
 @Data
 @ApiModel("上传附件回传DTO")
-public class AttachmentReqDTO implements Serializable {
+public class AttachmentResDTO implements Serializable {
     private static final long serialVersionUID = 4231782417155280127L;
     /**
      * 附件后缀

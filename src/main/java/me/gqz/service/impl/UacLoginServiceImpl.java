@@ -102,6 +102,7 @@ public class UacLoginServiceImpl implements UacLoginService {
         AuthUserDTO authUserDTO = new AuthUserDTO();
         authUserDTO.setUserId(uacUser.getSerialNo());
         authUserDTO.setUserName(uacUser.getLoginName());
+        authUserDTO.setNickName(uacUser.getNickName());
         String token = uacTokenService.encodeToken(authUserDTO);
         // 将登录信息放进ThreadLocalMap
         ThreadLocalMap.put(UacTokenConstants.JWT_TOKEN, token);

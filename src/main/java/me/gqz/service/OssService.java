@@ -1,7 +1,7 @@
 package me.gqz.service;
 
 import me.gqz.core.wrap.Wrapper;
-import me.gqz.model.dto.res.AttachmentReqDTO;
+import me.gqz.model.dto.res.AttachmentResDTO;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,7 +23,7 @@ public interface OssService {
      * @throws IOException
      * @author dragon
      * @date 2018/7/13 下午2:42
-     * @return Wrapper<AttachmentReqDTO>
+     * @return Wrapper<AttachmentResDTO>
      */
-    Wrapper<AttachmentReqDTO> uploadImage(InputStream inputStream, String fileName) throws Exception;
+    Wrapper<AttachmentResDTO> uploadImage(InputStream inputStream, String fileName) throws Exception;
 }

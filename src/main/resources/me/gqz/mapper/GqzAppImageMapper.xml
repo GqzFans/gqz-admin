@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="me.gqz.mapper.GqzAppImageMapper">
+  <resultMap id="BaseResultMap" type="me.gqz.domain.GqzAppImage">
+    <id column="id" jdbcType="VARCHAR" property="id" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="image_description" jdbcType="VARCHAR" property="imageDescription" />
+    <result column="create_user_id" jdbcType="VARCHAR" property="createUserId" />
+    <result column="create_user_name" jdbcType="VARCHAR" property="createUserName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="image_status" jdbcType="VARCHAR" property="imageStatus" />
+  </resultMap>
+
+  <!-- 资源站添加图片-批量 -->
+  <insert id="addGqzImage" parameterType="java.util.List">
+    insert into gqz_app_image (id, image_url, image_description, create_user_id, create_user_name, create_time, image_status)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id}, #{item.imageUrl}, #{item.imageDescription}, #{item.createUserId}, #{item.createUserName}, #{item.createTime},
+      #{item.imageStatus})
+    </foreach>
+  </insert>
+</mapper>

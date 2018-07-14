@@ -42,7 +42,6 @@ public class BaseController {
      * @return authUserDTO
      */
     protected AuthUserDTO getAuthUserByToken() {
-        Object res = ThreadLocalMap.get(UacTokenConstants.AUTH_USER_DTO);
         AuthUserDTO authUserDTO = (AuthUserDTO) ThreadLocalMap.get(UacTokenConstants.AUTH_USER_DTO);
         if (CommUsualUtils.isOEmptyOrNull(authUserDTO)) {
             throw new BusinessException("验证token失败");

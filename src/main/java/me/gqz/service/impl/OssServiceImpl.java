@@ -4,7 +4,6 @@ import com.aliyun.oss.HttpMethod;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import com.aliyun.oss.model.ObjectMetadata;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.config.OssConfig;
 import me.gqz.constant.HttpSchema;
@@ -15,7 +14,7 @@ import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
 import me.gqz.enums.OssFileUrlEnum;
 import me.gqz.enums.SerialNoEnum;
-import me.gqz.model.dto.res.AttachmentReqDTO;
+import me.gqz.model.dto.res.AttachmentResDTO;
 import me.gqz.service.OssService;
 import me.gqz.utils.ContextTypeUtils;
 import me.gqz.utils.RedisUtils;
@@ -57,11 +56,11 @@ public class OssServiceImpl implements OssService {
      * @exception Exception
      * @author dragon
      * @date 2018/7/13 下午2:50
-     * @return Wrapper<AttachmentReqDTO>
+     * @return Wrapper<AttachmentResDTO>
      */
     @Override
-    public Wrapper<AttachmentReqDTO> uploadImage(InputStream inputStream, String fileName) throws Exception {
-        AttachmentReqDTO attachment = new AttachmentReqDTO();
+    public Wrapper<AttachmentResDTO> uploadImage(InputStream inputStream, String fileName) throws Exception {
+        AttachmentResDTO attachment = new AttachmentResDTO();
         OSSClient ossClient = new OSSClient(ossConfig.getEndpoint(), ossConfig.getAccessKeyId(), ossConfig.getAccessKeySecret());
         try {
             String ossFilePath = OssFileUrlEnum.IMAGE_URL.getUrl();
