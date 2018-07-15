@@ -32,4 +32,24 @@ public interface GqzAppImageMapper extends MyMapper<GqzAppImage> {
      * @return List<GqzAppImage>
      */
     List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param);
+
+    /**
+     * <p>Title: dropImageById. </p>
+     * <p>图片管理下架图片 </p>
+     * @param appImage
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Integer
+     */
+    Integer dropImageById(GqzAppImage appImage);
+
+    /**
+     * <p>Title: upImageById. </p>
+     * <p>图片管理上架图片 </p>
+     * @param appImage
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Integer
+     */
+    Integer upImageById(GqzAppImage appImage);
 }

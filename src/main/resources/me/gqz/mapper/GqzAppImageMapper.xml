@@ -13,18 +13,19 @@
 
   <!-- 资源站添加图片-批量 -->
   <insert id="addGqzImage" parameterType="java.util.List">
-    insert into gqz_app_image (id, image_url, image_description, create_user_id, create_user_name, create_time, image_status)
+    insert into gqz_app_image (id, image_url, image_description, create_user_id, create_user_name, create_time, image_status, version)
     VALUES
     <foreach collection="list" item="item" index="index" separator=",">
       (#{item.id}, #{item.imageUrl}, #{item.imageDescription}, #{item.createUserId}, #{item.createUserName}, #{item.createTime},
-      #{item.imageStatus})
+      #{item.imageStatus}, #{item.version})
     </foreach>
   </insert>
 
+  <!-- 图片管理分页列表查询 -->
   <select id="queryGqzImageList" parameterType="me.gqz.model.dto.req.QueryGqzImageReqDTO"
           resultType="me.gqz.domain.GqzAppImage">
     SELECT
-    id, image_url, image_description, create_user_name, create_time, image_status
+    id, image_url, image_description, create_user_name, create_time, image_status, version
     FROM
     gqz_app_image
     WHERE
@@ -40,4 +41,46 @@
     </if>
     ORDER BY create_time DESC
   </select>
+
+  <!-- 图片管理下架图片 -->
+  <update id="dropImageById" parameterType="me.gqz.domain.GqzAppImage">
+    update `gqz_app_image`
+    <set>
+      <if test="imageStatus != null and imageStatus!= ''">
+        image_status = #{imageStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 图片管理上架图片 -->
+  <update id="upImageById" parameterType="me.gqz.domain.GqzAppImage">
+    update `gqz_app_image`
+    <set>
+      <if test="imageStatus != null and imageStatus!= ''">
+        image_status = #{imageStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
 </mapper>

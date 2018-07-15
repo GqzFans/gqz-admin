@@ -2,11 +2,13 @@ package me.gqz.restful;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.annotation.BusinessLog;
+import me.gqz.constant.SystemBaseConstants;
 import me.gqz.core.base.Page;
 import me.gqz.core.exception.BusinessException;
 import me.gqz.core.model.dto.AuthUserDTO;
@@ -15,8 +17,8 @@ import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
 import me.gqz.domain.GqzAppImage;
 import me.gqz.model.dto.req.InsertGqzImageReqDTO;
+import me.gqz.model.dto.req.OperateGqzImageReqDTO;
 import me.gqz.model.dto.req.QueryGqzImageReqDTO;
-import me.gqz.model.vo.UserListVO;
 import me.gqz.service.GqzImageService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -96,6 +98,82 @@ public class GqzImageCtl extends BaseController {
             return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
         } catch (Exception ex) {
             log.error("图片管理分页列表查询出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * <p>Title: operateImageById. </p>
+     * <p>图片管理下架或上架图片 </p>
+     * @param operateGqzImageReqDTO
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return result
+     */
+    @BusinessLog(logInfo = "图片管理下架或上架图片")
+    @ResponseBody
+    @RequestMapping(value = "/operateImageById", method = {RequestMethod.POST})
+    @ApiOperation(value = "图片管理下架或上架图片", httpMethod = "POST", notes = "返回图片管理下架或上架图片结果")
+    public Wrapper<?> operateImageById(@ApiParam(name = "operateGqzImageReqDTO", value = "下架图片参数") @RequestBody OperateGqzImageReqDTO operateGqzImageReqDTO) {
+        Boolean result;
+        try {
+            String model = operateGqzImageReqDTO.getModel();
+            String imageId = operateGqzImageReqDTO.getId();
+            Integer version = operateGqzImageReqDTO.getVersion();
+            if (CommUsualUtils.isSEmptyOrNull(imageId) || CommUsualUtils.isOEmptyOrNull(version) || CommUsualUtils.isSEmptyOrNull(model)) {
+                throw new BusinessException("参数不能为空");
+            }
+            AuthUserDTO authUser = getAuthUserByToken();
+            if (CommUsualUtils.isOEmptyOrNull(authUser)) {
+                throw new BusinessException("获取用户信息失败");
+            }
+            if (SystemBaseConstants.UP.equals(model)) {
+                log.warn("图片管理上架图片：ID = {}", imageId);
+                result = imageService.upImageById(operateGqzImageReqDTO, authUser);
+            } else if (SystemBaseConstants.DROP.equals(model)) {
+                log.warn("图片管理下架图片：ID = {}", imageId);
+                result = imageService.dropImageById(operateGqzImageReqDTO, authUser);
+            } else {
+                throw new BusinessException("操作非法");
+            }
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, result);
+        } catch (BusinessException ex) {
+            log.error("图片管理下架或上架图片出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
+        } catch (Exception ex) {
+            log.error("图片管理下架或上架图片出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * <p>Title: deleteImageById. </p>
+     * <p>图片管理删除图片 </p>
+     * @param operateGqzImageReqDTO
+     * @author dragon
+     * @date 2018/7/15 下午7:58
+     * @return result
+     */
+    @BusinessLog(logInfo = "图片管理删除图片")
+    @ResponseBody
+    @RequestMapping(value = "/deleteImageById", method = {RequestMethod.POST})
+    @ApiOperation(value = "图片管理删除图片", httpMethod = "POST", notes = "返回图片管理删除图片结果")
+    public Wrapper<?> deleteImageById(@ApiParam(name = "operateGqzImageReqDTO", value = "操作图片参数") @RequestBody OperateGqzImageReqDTO operateGqzImageReqDTO) {
+        try {
+            if (CommUsualUtils.isSEmptyOrNull(operateGqzImageReqDTO.getId()) || CommUsualUtils.isOEmptyOrNull(operateGqzImageReqDTO.getVersion())) {
+                throw new BusinessException("参数不能为空");
+            }
+            AuthUserDTO authUser = getAuthUserByToken();
+            if (CommUsualUtils.isOEmptyOrNull(authUser)) {
+                throw new BusinessException("获取用户信息失败");
+            }
+            Boolean result = imageService.deleteImageById(operateGqzImageReqDTO);
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, result);
+        } catch (BusinessException ex) {
+            log.error("图片管理删除图片出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
+        } catch (Exception ex) {
+            log.error("图片管理删除图片出错：{}", ex.getMessage(), ex);
             return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
         }
     }

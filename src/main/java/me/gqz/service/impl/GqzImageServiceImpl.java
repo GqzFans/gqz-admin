@@ -7,6 +7,7 @@ import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.domain.GqzAppImage;
 import me.gqz.mapper.GqzAppImageMapper;
 import me.gqz.model.dto.req.InsertGqzImageReqDTO;
+import me.gqz.model.dto.req.OperateGqzImageReqDTO;
 import me.gqz.model.dto.req.QueryGqzImageReqDTO;
 import me.gqz.service.GqzImageService;
 import org.springframework.stereotype.Service;
@@ -60,6 +61,7 @@ public class GqzImageServiceImpl implements GqzImageService {
             appImage.setImageDescription(imageDescription);
             appImage.setImageStatus(SystemBaseConstants.Y);
             appImage.setImageUrl(imageUrl);
+            appImage.setVersion(SystemBaseConstants.VERSION_INIT);
             imageList.add(appImage);
         }
         Integer count = appImageMapper.addGqzImage(imageList);
@@ -82,5 +84,81 @@ public class GqzImageServiceImpl implements GqzImageService {
     @Override
     public List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param) {
         return appImageMapper.queryGqzImageList(param);
+    }
+
+    /**
+     * <p>Title: dropImageById. </p>
+     * <p>图片管理下架图片 </p>
+     * @param operateGqzImageReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean dropImageById(OperateGqzImageReqDTO operateGqzImageReqDTO, AuthUserDTO authUser) {
+        GqzAppImage appImage = new GqzAppImage();
+        appImage.setId(operateGqzImageReqDTO.getId());
+        appImage.setVersion(operateGqzImageReqDTO.getVersion());
+        appImage.setImageStatus(SystemBaseConstants.N);
+        appImage.setUpdateTime(new Date());
+        appImage.setUpdateUserId(authUser.getUserId());
+        appImage.setUpdateUserName(authUser.getNickName());
+        Integer count = appImageMapper.dropImageById(appImage);
+        if (1 == count) {
+            return true;
+        } else {
+            throw new BusinessException("下架图片失败");
+        }
+    }
+
+    /**
+     * <p>Title: upImageById. </p>
+     * <p>图片管理上架图片 </p>
+     * @param operateGqzImageReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean upImageById(OperateGqzImageReqDTO operateGqzImageReqDTO, AuthUserDTO authUser) {
+        GqzAppImage appImage = new GqzAppImage();
+        appImage.setId(operateGqzImageReqDTO.getId());
+        appImage.setVersion(operateGqzImageReqDTO.getVersion());
+        appImage.setImageStatus(SystemBaseConstants.Y);
+        appImage.setUpdateTime(new Date());
+        appImage.setUpdateUserId(authUser.getUserId());
+        appImage.setUpdateUserName(authUser.getNickName());
+        Integer count = appImageMapper.upImageById(appImage);
+        if (1 == count) {
+            return true;
+        } else {
+            throw new BusinessException("上架图片失败");
+        }
+    }
+
+    /**
+     * <p>Title: deleteImageById. </p>
+     * <p>图片管理删除图片 </p>
+     * @param operateGqzImageReqDTO
+     * @author dragon
+     * @date 2018/7/15 下午7:58
+     * @return Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean deleteImageById(OperateGqzImageReqDTO operateGqzImageReqDTO) {
+        GqzAppImage appImage = new GqzAppImage();
+        appImage.setId(operateGqzImageReqDTO.getId());
+        appImage.setVersion(operateGqzImageReqDTO.getVersion());
+        int count = appImageMapper.delete(appImage);
+        if (1 == count) {
+            return true;
+        } else {
+            throw new BusinessException("删除图片失败");
+        }
     }
 }

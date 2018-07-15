@@ -73,7 +73,7 @@ public class UserManagementCtl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/dropUserById", method = {RequestMethod.POST})
     @ApiOperation(value = "停用用户", httpMethod = "POST", notes = "返回停用用户结果")
-    public Wrapper<?> dropUserById(@ApiParam(name = "id", value = "停用用户参数") @RequestBody DropUserReqDTO dropUserReqDTO) {
+    public Wrapper<?> dropUserById(@ApiParam(name = "dropUserReqDTO", value = "停用用户参数") @RequestBody DropUserReqDTO dropUserReqDTO) {
         try {
             if (CommUsualUtils.isSEmptyOrNull(dropUserReqDTO.getId()) || CommUsualUtils.isSEmptyOrNull(dropUserReqDTO.getVersion())) {
                 throw new BusinessException("参数不能为空");

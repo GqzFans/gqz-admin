@@ -16,6 +16,14 @@ public class SystemBaseConstants {
      */
     public static final String N = "2";
     /**
+     * 上架
+     */
+    public static final String UP = "up";
+    /**
+     * 下架
+     */
+    public static final String DROP = "drop";
+    /**
      * 初始化版本号
      */
     public static final Integer VERSION_INIT = 0;

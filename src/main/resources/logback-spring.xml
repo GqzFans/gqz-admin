@@ -12,7 +12,7 @@
             <charset>utf-8</charset>
         </encoder>
         <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>DEBUG</level>
+            <level>INFO</level>
         </filter>
     </appender>
 
@@ -103,7 +103,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.xescm.otc.mapper" level="DEBUG">
+    <logger name="me.gqz.mapper" level="DEBUG">
         <appender-ref ref="FILE_SQL"/>
     </logger>
 

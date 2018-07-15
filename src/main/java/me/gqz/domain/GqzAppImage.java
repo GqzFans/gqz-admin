@@ -17,6 +17,7 @@ import java.util.Date;
 @Data
 @Table(name = "gqz_app_image")
 public class GqzAppImage implements Serializable {
+    private static final long serialVersionUID = 7094722363548224119L;
     /**
      * 主键
      */
@@ -69,4 +70,33 @@ public class GqzAppImage implements Serializable {
     @ApiModelProperty(value = "图片状态")
     private String imageStatus;
 
+    /**
+     * 更新人ID
+     */
+    @Column(name = "update_user_id")
+    @ApiModelProperty(value = "更新人ID")
+    private String updateUserId;
+
+    /**
+     * 更新人昵称
+     */
+    @Column(name = "update_user_name")
+    @ApiModelProperty(value = "更新人昵称")
+    private String updateUserName;
+
+    /**
+     * 更新时间
+     */
+    @Column(name = "update_time")
+    @ApiModelProperty(value = "更新时间")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updateTime;
+
+    /**
+     * 版本号
+     */
+    @Column(name = "version")
+    @ApiModelProperty(value = "版本号")
+    private Integer version;
 }

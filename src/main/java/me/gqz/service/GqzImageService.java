@@ -3,6 +3,7 @@ package me.gqz.service;
 import me.gqz.core.model.dto.AuthUserDTO;
 import me.gqz.domain.GqzAppImage;
 import me.gqz.model.dto.req.InsertGqzImageReqDTO;
+import me.gqz.model.dto.req.OperateGqzImageReqDTO;
 import me.gqz.model.dto.req.QueryGqzImageReqDTO;
 
 import java.util.List;
@@ -34,4 +35,36 @@ public interface GqzImageService {
      * @return List<GqzAppImage>
      */
     List<GqzAppImage> queryGqzImageList(QueryGqzImageReqDTO param);
+
+    /**
+     * <p>Title: dropImageById. </p>
+     * <p>图片管理下架图片 </p>
+     * @param operateGqzImageReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Boolean
+     */
+    Boolean dropImageById(OperateGqzImageReqDTO operateGqzImageReqDTO, AuthUserDTO authUser);
+
+    /**
+     * <p>Title: upImageById. </p>
+     * <p>图片管理上架图片 </p>
+     * @param operateGqzImageReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/7/15 下午6:03
+     * @return Boolean
+     */
+    Boolean upImageById(OperateGqzImageReqDTO operateGqzImageReqDTO, AuthUserDTO authUser);
+
+    /**
+     * <p>Title: deleteImageById. </p>
+     * <p>图片管理删除图片 </p>
+     * @param operateGqzImageReqDTO
+     * @author dragon
+     * @date 2018/7/15 下午7:58
+     * @return Boolean
+     */
+    Boolean deleteImageById(OperateGqzImageReqDTO operateGqzImageReqDTO);
 }
