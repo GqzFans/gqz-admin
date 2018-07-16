@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.gqz.mapper.GqzAppEmoticonMapper" >
+  <resultMap id="BaseResultMap" type="me.gqz.domain.GqzAppEmoticon" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="emoticon_url" property="emoticonUrl" jdbcType="VARCHAR" />
+    <result column="emoticon_description" property="emoticonDescription" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="emoticon_status" property="emoticonStatus" jdbcType="VARCHAR" />
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!-- 资源站添加表情包 -->
+  <insert id="addGqzEmoticon" parameterType="java.util.List">
+    insert into gqz_app_emoticon (id, emoticon_url, emoticon_description, create_user_id, create_user_name, create_time, emoticon_status, version)
+    VALUES
+    <foreach collection="list" item="item" index="index" separator=",">
+      (#{item.id}, #{item.emoticonUrl}, #{item.emoticonDescription}, #{item.createUserId}, #{item.createUserName}, #{item.createTime},
+      #{item.emoticonStatus}, #{item.version})
+    </foreach>
+  </insert>
+
+  <!-- 表情包管理分页列表查询 -->
+  <select id="queryGqzEmoticonList" parameterType="me.gqz.model.dto.req.QueryGqzEmoticonReqDTO"
+          resultType="me.gqz.domain.GqzAppEmoticon">
+    SELECT
+      id, emoticon_url, emoticon_description, create_user_name, create_time, emoticon_status, version
+    FROM
+      gqz_app_emoticon
+    WHERE
+    1=1
+    <if test="beginDate !=null and beginDate !=''">
+      AND create_time <![CDATA[ >= ]]> #{beginDate}
+    </if>
+    <if test="endDate !=null and endDate !=''">
+      AND create_time <![CDATA[ <= ]]> #{endDate}
+    </if>
+    <if test="createUserName !=null and createUserName !=''">
+      AND create_user_name LIKE concat('%',#{createUserName},'%')
+    </if>
+    ORDER BY create_time DESC
+  </select>
+
+  <!-- 表情包管理上架图片 -->
+  <update id="upEmoticonById" parameterType="me.gqz.domain.GqzAppEmoticon">
+    update `gqz_app_emoticon`
+    <set>
+      <if test="emoticonStatus != null and emoticonStatus!= ''">
+        emoticon_status = #{emoticonStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 表情包管理下架图片 -->
+  <update id="dropEmoticonById" parameterType="me.gqz.domain.GqzAppEmoticon">
+    update `gqz_app_emoticon`
+    <set>
+      <if test="emoticonStatus != null and emoticonStatus!= ''">
+        emoticon_status = #{emoticonStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+</mapper>

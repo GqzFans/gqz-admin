@@ -79,4 +79,45 @@ public class FileUploadCtl extends BaseController {
         }
         return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, attachmentResDTOS);
     }
+
+
+    /**
+     * <p>Title: uploadEmoticon. </p>
+     * <p>上传附件表情包 </p>
+     * @param request
+     * @author dragon
+     * @date 2018/7/16 上午10:24
+     * @return Wrapper<List<AttachmentResDTO>>
+     */
+    @BusinessLog(logInfo = "上传附件接口")
+    @RequestMapping(value = "/uploadEmoticon")
+    @ApiOperation(notes = "返回上传后表情包通用信息", httpMethod = "POST", value = "上传附件表情包")
+    public Wrapper<List<AttachmentResDTO>> uploadEmoticon(HttpServletRequest request) {
+        log.info("上传附件表情包开始: 操作用户 => {}", getAuthUserByToken());
+        List<AttachmentResDTO> attachmentResDTOS = new ArrayList<>();
+        try {
+            MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+            // 获取文件信息
+            List<MultipartFile> imgFiles = multipartRequest.getFiles(FILE_NAME);
+            for (MultipartFile file : imgFiles){
+                String imgFileName = file.getOriginalFilename();
+                String fileName = imgFileName;
+                // 获取文件流
+                InputStream inputStream = file.getInputStream();
+                Wrapper<AttachmentResDTO> wrapper = ossService.uploadEmoticon(inputStream, fileName);
+                if (Wrapper.SUCCESS_CODE == wrapper.getCode() && !CommUsualUtils.isOEmptyOrNull(wrapper.getResult())) {
+                    attachmentResDTOS.add(wrapper.getResult());
+                    log.info("上传附件表情包成功！附件 = {}", wrapper.getResult().toString());
+                } else {
+                    log.error("上传附件表情包失败");
+                }
+            }
+            log.info("上传附件成功！！！！！上传数量 = {}", imgFiles.size());
+            log.info("上传附件成功！！！！！上传参数 = {}", attachmentResDTOS.toString());
+        } catch (Exception e) {
+            log.error("上传附件表情包, 出现异常={}", e);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE,"上传附件表情包出现异常");
+        }
+        return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, attachmentResDTOS);
+    }
 }

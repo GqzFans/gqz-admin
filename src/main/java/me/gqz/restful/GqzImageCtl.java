@@ -2,7 +2,6 @@ package me.gqz.restful;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -28,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>Title: GqzImageCtl. </p>
- * <p>Description 图片管理 </p>
+ * <p>Description 高秋梓资源站-内容管理-图片管理 </p>
  * @author dragon
  * @date 2018/7/14 下午3:36
  */
@@ -53,7 +52,7 @@ public class GqzImageCtl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/addGqzImage", method = {RequestMethod.POST})
     @ApiOperation(value = "资源站添加图片", httpMethod = "POST", notes = "返回添加图片结果")
-    public Wrapper<?> addGqzImage(@ApiParam(name = "id", value = "资源站添加图片参数") @RequestBody InsertGqzImageReqDTO insertGqzImageReqDTO) {
+    public Wrapper<?> addGqzImage(@ApiParam(name = "insertGqzImageReqDTO", value = "资源站添加图片参数") @RequestBody InsertGqzImageReqDTO insertGqzImageReqDTO) {
         try {
             if (CommUsualUtils.isSEmptyOrNull(insertGqzImageReqDTO.getImageDescription()) ||
                     insertGqzImageReqDTO.getImageList().size() < 1) {
@@ -114,7 +113,7 @@ public class GqzImageCtl extends BaseController {
     @ResponseBody
     @RequestMapping(value = "/operateImageById", method = {RequestMethod.POST})
     @ApiOperation(value = "图片管理下架或上架图片", httpMethod = "POST", notes = "返回图片管理下架或上架图片结果")
-    public Wrapper<?> operateImageById(@ApiParam(name = "operateGqzImageReqDTO", value = "下架图片参数") @RequestBody OperateGqzImageReqDTO operateGqzImageReqDTO) {
+    public Wrapper<?> operateImageById(@ApiParam(name = "operateGqzImageReqDTO", value = "图片操作参数") @RequestBody OperateGqzImageReqDTO operateGqzImageReqDTO) {
         Boolean result;
         try {
             String model = operateGqzImageReqDTO.getModel();
@@ -128,10 +127,10 @@ public class GqzImageCtl extends BaseController {
                 throw new BusinessException("获取用户信息失败");
             }
             if (SystemBaseConstants.UP.equals(model)) {
-                log.warn("图片管理上架图片：ID = {}", imageId);
+                log.warn("图片管理上架：ID = {}", imageId);
                 result = imageService.upImageById(operateGqzImageReqDTO, authUser);
             } else if (SystemBaseConstants.DROP.equals(model)) {
-                log.warn("图片管理下架图片：ID = {}", imageId);
+                log.warn("图片管理下架：ID = {}", imageId);
                 result = imageService.dropImageById(operateGqzImageReqDTO, authUser);
             } else {
                 throw new BusinessException("操作非法");

@@ -26,4 +26,16 @@ public interface OssService {
      * @return Wrapper<AttachmentResDTO>
      */
     Wrapper<AttachmentResDTO> uploadImage(InputStream inputStream, String fileName) throws Exception;
+
+    /**
+     * <p>Title: uploadEmoticon. </p>
+     * <p>上传附件表情包 </p>
+     * @param  inputStream
+     * @param  fileName
+     * @throws IOException
+     * @author dragon
+     * @date 2018/7/16 上午10:25
+     * @return Wrapper<AttachmentResDTO>
+     */
+    Wrapper<AttachmentResDTO> uploadEmoticon(InputStream inputStream, String fileName) throws IOException;
 }

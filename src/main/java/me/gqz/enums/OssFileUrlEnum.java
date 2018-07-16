@@ -7,10 +7,8 @@ package me.gqz.enums;
  * @date 2018/7/13 下午2:52
  */
 public enum OssFileUrlEnum {
-    /**
-     * 默认文件地址
-     */
-    IMAGE_URL("image", "图片地址");
+    IMAGE_URL("image", "图片地址"),
+    EMOTICON_URL("emoticon", "表情包地址");
 
     String url;
     String name;
