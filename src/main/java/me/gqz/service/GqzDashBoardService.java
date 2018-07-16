@@ -1,5 +1,6 @@
 package me.gqz.service;
 
+import me.gqz.domain.GqzAppVersion;
 import me.gqz.model.dto.res.RecentUserLogResDTO;
 import me.gqz.model.vo.DashBoardDataStatisticsVO;
 
@@ -29,4 +30,13 @@ public interface GqzDashBoardService {
      * @return DashBoardDataStatisticsVO
      */
     DashBoardDataStatisticsVO getDataStatistics();
+
+    /**
+     * <p>Title: getVersionInfo. </p>
+     * <p>获取高秋梓资源站上线版本信息 </p>
+     * @author dragon
+     * @date 2018/7/16 下午3:34
+     * @return List<GqzAppVersion>
+     */
+    List<GqzAppVersion> getVersionInfo();
 }

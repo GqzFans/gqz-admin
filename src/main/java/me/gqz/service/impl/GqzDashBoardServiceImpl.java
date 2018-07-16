@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.gqz.core.utils.DoubleUtils;
 import me.gqz.domain.GqzAppEmoticon;
 import me.gqz.domain.GqzAppImage;
+import me.gqz.domain.GqzAppVersion;
+import me.gqz.mapper.GqzAppVersionMapper;
 import me.gqz.mapper.UacUserLoginLogMapper;
 import me.gqz.model.dto.res.RecentUserLogResDTO;
 import me.gqz.model.vo.DashBoardDataStatisticsVO;
@@ -31,6 +33,8 @@ public class GqzDashBoardServiceImpl implements GqzDashBoardService {
     private GqzImageService imageService;
     @Resource
     private GqzEmoticonService emoticonService;
+    @Resource
+    private GqzAppVersionMapper appVersionMapper;
 
     /**
      * <p>Title: getRecentUserLog. </p>
@@ -72,5 +76,17 @@ public class GqzDashBoardServiceImpl implements GqzDashBoardService {
         dataStatisticsVO.setGqzVideoCount(0);
         dataStatisticsVO.setUploadVideoMonthPercentage(0.0);
         return dataStatisticsVO;
+    }
+
+    /**
+     * <p>Title: getVersionInfo. </p>
+     * <p>获取高秋梓资源站上线版本信息 </p>
+     * @author dragon
+     * @date 2018/7/16 下午3:34
+     * @return List<GqzAppVersion>
+     */
+    @Override
+    public List<GqzAppVersion> getVersionInfo() {
+        return appVersionMapper.getVersionInfo();
     }
 }
