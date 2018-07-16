@@ -73,3 +73,15 @@ mapper:
   mappers: me.gqz.config.MyMapper
   not-empty: false
   identity: MYSQL
+swagger:
+  enabled: true
+#OSS config
+oss_conf:
+  endpoint: oss-cn-beijing.aliyuncs.com
+  outEndpoint: oss-cn-beijing.aliyuncs.com
+  accessKeyId: 
+  accessKeySecret: 
+  bucketName: 
+  bucket: 
+  delayHour: 1
+  remotePath: /
