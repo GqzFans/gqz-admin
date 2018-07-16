@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public class GqzImageServiceImpl implements GqzImageService {
+public class GqzImageServiceImpl extends BaseService<GqzAppImage> implements GqzImageService {
 
     @Resource
     private GqzAppImageMapper appImageMapper;
@@ -160,5 +160,17 @@ public class GqzImageServiceImpl implements GqzImageService {
         } else {
             throw new BusinessException("删除图片失败");
         }
+    }
+
+    /**
+     * <p>Title: queryThisMonthUploadCount. </p>
+     * <p>获取本月新增数据数量 </p>
+     * @author dragon
+     * @date 2018/7/16 下午2:51
+     * @return Integer
+     */
+    @Override
+    public Integer queryThisMonthUploadCount() {
+        return appImageMapper.queryThisMonthUploadCount();
     }
 }

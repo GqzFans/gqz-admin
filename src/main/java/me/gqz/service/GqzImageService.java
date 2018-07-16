@@ -14,7 +14,7 @@ import java.util.List;
  * @author dragon
  * @date 2018/7/14 下午4:23
  */
-public interface GqzImageService {
+public interface GqzImageService extends IService<GqzAppImage> {
     /**
      * <p>Title: addGqzImage. </p>
      * <p>资源站添加图片 </p>
@@ -67,4 +67,13 @@ public interface GqzImageService {
      * @return Boolean
      */
     Boolean deleteImageById(OperateGqzImageReqDTO operateGqzImageReqDTO);
+
+    /**
+     * <p>Title: queryThisMonthUploadCount. </p>
+     * <p>获取本月新增数据数量 </p>
+     * @author dragon
+     * @date 2018/7/16 下午2:51
+     * @return Integer
+     */
+    Integer queryThisMonthUploadCount();
 }

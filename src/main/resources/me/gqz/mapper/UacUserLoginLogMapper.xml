@@ -9,4 +9,13 @@
         <result column="login_ip" property="loginIp" jdbcType="VARCHAR" />
         <result column="login_time" property="loginTime" jdbcType="TIMESTAMP" />
     </resultMap>
+
+    <select id="getRecentUserLog" resultType="me.gqz.model.dto.res.RecentUserLogResDTO">
+        SELECT
+        id, login_name, login_ip, login_time
+        FROM
+        uac_user_login_log
+        ORDER BY login_time DESC
+        LIMIT 0,5
+    </select>
 </mapper>

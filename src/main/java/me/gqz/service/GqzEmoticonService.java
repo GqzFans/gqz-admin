@@ -14,7 +14,7 @@ import java.util.List;
  * @author dragon
  * @date 2018/7/15 下午10:24
  */
-public interface GqzEmoticonService {
+public interface GqzEmoticonService extends IService<GqzAppEmoticon> {
     /**
      * <p>Title: addGqzEmoticon. </p>
      * <p>资源站添加表情包 </p>
@@ -67,4 +67,13 @@ public interface GqzEmoticonService {
      * @return Boolean
      */
     Boolean deleteEmoticonById(OperateGqzEmoticonReqDTO operateGqzEmoticonReqDTO);
+
+    /**
+     * <p>Title: queryThisMonthUploadCount. </p>
+     * <p>获取本月新增数据数量 </p>
+     * @author dragon
+     * @date 2018/7/16 下午2:51
+     * @return Integer
+     */
+    Integer queryThisMonthUploadCount();
 }

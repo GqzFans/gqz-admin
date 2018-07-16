@@ -27,7 +27,7 @@ import java.util.UUID;
  */
 @Slf4j
 @Service
-public class GqzEmoticonServiceImpl implements GqzEmoticonService {
+public class GqzEmoticonServiceImpl extends BaseService<GqzAppEmoticon> implements GqzEmoticonService {
 
     @Resource
     private GqzAppEmoticonMapper appEmoticonMapper;
@@ -160,5 +160,17 @@ public class GqzEmoticonServiceImpl implements GqzEmoticonService {
         } else {
             throw new BusinessException("删除表情包失败");
         }
+    }
+
+    /**
+     * <p>Title: queryThisMonthUploadCount. </p>
+     * <p>获取本月新增数据数量 </p>
+     * @author dragon
+     * @date 2018/7/16 下午2:51
+     * @return Integer
+     */
+    @Override
+    public Integer queryThisMonthUploadCount() {
+        return appEmoticonMapper.queryThisMonthUploadCount();
     }
 }

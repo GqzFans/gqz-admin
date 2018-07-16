@@ -83,4 +83,14 @@
     </set>
     where id = #{id,jdbcType=VARCHAR} and version = #{version}
   </update>
+
+  <!-- 获取本月新增数据数量 -->
+  <select id="queryThisMonthUploadCount" resultType="java.lang.Integer">
+    SELECT
+	  COUNT(id)
+    FROM
+	  gqz_app_image
+    WHERE
+	  DATE_FORMAT(create_time, '%Y%m') = DATE_FORMAT(CURDATE( ), '%Y%m')
+  </select>
 </mapper>

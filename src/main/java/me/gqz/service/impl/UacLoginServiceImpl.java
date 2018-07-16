@@ -74,7 +74,8 @@ public class UacLoginServiceImpl implements UacLoginService {
             String nickName = uacUser.getNickName();
             loginName = uacUser.getLoginName();
             // 插入用户日志表
-            insertUserLoginLog(userId, uacLoginReqDTO);
+            String systemId = uacLoginReqDTO.getSystemId();
+            insertUserLoginLog(userId, loginName, systemId);
             // 返回数据，作为用户base数据
             UacLoginResDTO uacLoginResDTO = new UacLoginResDTO();
             uacLoginResDTO.setId(userId);
@@ -98,7 +99,7 @@ public class UacLoginServiceImpl implements UacLoginService {
      */
     public String getToken(UacUser uacUser) {
         // TOKEN处理
-        log.info("登录成功，获取用户TOKEN。用户 = {}", uacUser.toString());
+        log.info("登录成功，获取用户TOKEN。用户 = {}", uacUser.getLoginName());
         AuthUserDTO authUserDTO = new AuthUserDTO();
         authUserDTO.setUserId(uacUser.getSerialNo());
         authUserDTO.setUserName(uacUser.getLoginName());
@@ -113,16 +114,17 @@ public class UacLoginServiceImpl implements UacLoginService {
      * <p>Title: insertUserLoginLog. </p>
      * <p>插入用户日志表 </p>
      * @param userId
-     * @param uacLoginReqDTO
+     * @param loginName
+     * @param systemId
      * @author dragon
      * @date 2018/4/8 下午3:01
      */
-    private void insertUserLoginLog(String userId, UacLoginReqDTO uacLoginReqDTO) {
+    private void insertUserLoginLog(String userId, String loginName, String systemId) {
         UacUserLoginLog uacUserLoginLog = new UacUserLoginLog();
         uacUserLoginLog.setUserId(userId);
-        uacUserLoginLog.setLoginName(uacLoginReqDTO.getLoginName());
+        uacUserLoginLog.setLoginName(loginName);
         uacUserLoginLog.setLoginIp(RequestUtil.getRequest().getRemoteAddr());
-        uacUserLoginLog.setSystemId(uacLoginReqDTO.getSystemId());
+        uacUserLoginLog.setSystemId(systemId);
         uacUserLoginLog.setLoginTime(new Date());
         uacUserLoginLogMapper.insert(uacUserLoginLog);
     }
