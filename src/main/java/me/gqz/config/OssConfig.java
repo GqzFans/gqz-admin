@@ -54,4 +54,9 @@ public class OssConfig {
      * Bucket
      */
     private String bucket;
+
+    /**
+     * Bucket Domain
+     */
+    private String bucketDomain;
 }

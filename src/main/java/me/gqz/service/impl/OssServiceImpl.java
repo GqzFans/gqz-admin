@@ -112,7 +112,7 @@ public class OssServiceImpl implements OssService {
                 netUrl = ossClient.generatePresignedUrl(request).toString();
             }
             // OSS非授权时，拼接地址
-            netUrl = HttpSchema.HTTPS + ossConfig.getBucket() + SystemBaseConstants.FORWARD_SLASH + ossFilePath + fileName;
+            netUrl = HttpSchema.HTTPS + ossConfig.getBucketDomain() + SystemBaseConstants.FORWARD_SLASH + ossFilePath + fileName;
             attachment.setAttachmentName(fileName);
             attachment.setAttachmentCode(serialNo);
             attachment.setAttachmentUrl(netUrl);
@@ -187,7 +187,7 @@ public class OssServiceImpl implements OssService {
                 netUrl = ossClient.generatePresignedUrl(request).toString();
             }
             // OSS非授权时，拼接地址
-            netUrl = HttpSchema.HTTPS + ossConfig.getBucket() + SystemBaseConstants.FORWARD_SLASH + ossFilePath + fileName;
+            netUrl = HttpSchema.HTTPS + ossConfig.getBucketDomain() + SystemBaseConstants.FORWARD_SLASH + ossFilePath + fileName;
             attachment.setAttachmentName(fileName);
             attachment.setAttachmentCode(serialNo);
             attachment.setAttachmentUrl(netUrl);
