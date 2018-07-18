@@ -41,12 +41,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
 		// 拦截规则
 		addInterceptor.addPathPatterns("/**");
 		addInterceptor.excludePathPatterns("/api/uac/auth/token/**");
+		addInterceptor.excludePathPatterns("/api/gqz/open/**");
 		if (swaggerEnabled) {
 			addInterceptor.excludePathPatterns("/swagger-resources");
-			addInterceptor
-					.excludePathPatterns("/swagger-resources/configuration/ui");
-			addInterceptor.excludePathPatterns(
-					"/swagger-resources/configuration/security");
+			addInterceptor.excludePathPatterns("/swagger-resources/configuration/ui");
+			addInterceptor.excludePathPatterns("/swagger-resources/configuration/security");
 			addInterceptor.excludePathPatterns("/v2/api-docs");
 		}
 	}
