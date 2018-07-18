@@ -97,4 +97,15 @@
     WHERE
 	  DATE_FORMAT(create_time, '%Y%m') = DATE_FORMAT(CURDATE( ), '%Y%m')
   </select>
+
+  <!-- 小程序查询表情包列表分页查询 -->
+  <select id="appGetGqzEmoticonList" resultType="me.gqz.domain.GqzAppEmoticon">
+    SELECT
+    id, emoticon_url, emoticon_description
+    FROM
+    gqz_app_emoticon
+    WHERE
+    emoticon_status = '1'
+    ORDER BY create_time DESC
+  </select>
 </mapper>

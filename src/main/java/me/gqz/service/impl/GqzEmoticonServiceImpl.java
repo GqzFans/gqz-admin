@@ -173,4 +173,16 @@ public class GqzEmoticonServiceImpl extends BaseService<GqzAppEmoticon> implemen
     public Integer queryThisMonthUploadCount() {
         return appEmoticonMapper.queryThisMonthUploadCount();
     }
+
+    /**
+     * <p>Title: appGetGqzEmoticonList. </p>
+     * <p>小程序查询表情包列表分页 </p>
+     * @author dragon
+     * @date 2018/7/18 下午8:29
+     * @return List<GqzAppEmoticon>
+     */
+    @Override
+    public List<GqzAppEmoticon> appGetGqzEmoticonList() {
+        return appEmoticonMapper.appGetGqzEmoticonList();
+    }
 }

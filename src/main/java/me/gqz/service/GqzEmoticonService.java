@@ -76,4 +76,13 @@ public interface GqzEmoticonService extends IService<GqzAppEmoticon> {
      * @return Integer
      */
     Integer queryThisMonthUploadCount();
+
+    /**
+     * <p>Title: appGetGqzEmoticonList. </p>
+     * <p>小程序查询表情包列表分页 </p>
+     * @author dragon
+     * @date 2018/7/18 下午8:29
+     * @return List<GqzAppEmoticon>
+     */
+    List<GqzAppEmoticon> appGetGqzEmoticonList();
 }

@@ -173,4 +173,16 @@ public class GqzImageServiceImpl extends BaseService<GqzAppImage> implements Gqz
     public Integer queryThisMonthUploadCount() {
         return appImageMapper.queryThisMonthUploadCount();
     }
+
+    /**
+     * <p>Title: appGetGqzImageList. </p>
+     * <p>小程序查询图片列表分页查询 </p>
+     * @author dragon
+     * @date 2018/7/18 下午5:54
+     * @return List<GqzAppImage>
+     */
+    @Override
+    public List<GqzAppImage> appGetGqzImageList() {
+        return appImageMapper.appGetGqzImageList();
+    }
 }

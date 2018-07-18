@@ -93,4 +93,15 @@
     WHERE
 	  DATE_FORMAT(create_time, '%Y%m') = DATE_FORMAT(CURDATE( ), '%Y%m')
   </select>
+
+  <!-- 小程序查询图片列表分页查询 -->
+  <select id="appGetGqzImageList" resultType="me.gqz.domain.GqzAppImage">
+    SELECT
+    id, image_url, image_description
+    FROM
+    gqz_app_image
+    WHERE
+    image_status = '1'
+    ORDER BY create_time DESC
+  </select>
 </mapper>
