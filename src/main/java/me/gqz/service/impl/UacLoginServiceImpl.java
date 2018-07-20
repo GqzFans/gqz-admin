@@ -75,7 +75,8 @@ public class UacLoginServiceImpl implements UacLoginService {
             loginName = uacUser.getLoginName();
             // 插入用户日志表
             String systemId = uacLoginReqDTO.getSystemId();
-            insertUserLoginLog(userId, loginName, systemId);
+            // 此处将昵称存入日志
+            insertUserLoginLog(userId, nickName, systemId);
             // 返回数据，作为用户base数据
             UacLoginResDTO uacLoginResDTO = new UacLoginResDTO();
             uacLoginResDTO.setId(userId);
