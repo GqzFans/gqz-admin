@@ -62,16 +62,24 @@ public class GqzDashBoardServiceImpl implements GqzDashBoardService {
         GqzAppImage appImage = new GqzAppImage();
         int imageTotalCount = imageService.selectCount(appImage);
         Integer imageThisMonthCount = imageService.queryThisMonthUploadCount();
-        Double uploadImageMonthPercentage = DoubleUtils.div(imageThisMonthCount, imageTotalCount);
+        if (imageTotalCount != 0) {
+            Double uploadImageMonthPercentage = DoubleUtils.div(imageThisMonthCount, imageTotalCount);
+            dataStatisticsVO.setUploadImageMonthPercentage(uploadImageMonthPercentage);
+        } else {
+            dataStatisticsVO.setUploadImageMonthPercentage(0.0);
+        }
         dataStatisticsVO.setGqzImageCount(imageTotalCount);
-        dataStatisticsVO.setUploadImageMonthPercentage(uploadImageMonthPercentage);
         // 表情包相关数据
         GqzAppEmoticon appEmoticon = new GqzAppEmoticon();
         int emoticonTotalCount = emoticonService.selectCount(appEmoticon);
         Integer emoticonThisMonthCount = emoticonService.queryThisMonthUploadCount();
-        Double uploadEmoticonMonthPercentage = DoubleUtils.div(emoticonThisMonthCount, emoticonTotalCount);
+        if (emoticonTotalCount != 0) {
+            Double uploadEmoticonMonthPercentage = DoubleUtils.div(emoticonThisMonthCount, emoticonTotalCount);
+            dataStatisticsVO.setUploadEmoticonMonthPercentage(uploadEmoticonMonthPercentage);
+        } else {
+            dataStatisticsVO.setUploadEmoticonMonthPercentage(0.0);
+        }
         dataStatisticsVO.setGqzEmoticonCount(emoticonTotalCount);
-        dataStatisticsVO.setUploadEmoticonMonthPercentage(uploadEmoticonMonthPercentage);
         // 视频相关数据
         dataStatisticsVO.setGqzVideoCount(0);
         dataStatisticsVO.setUploadVideoMonthPercentage(0.0);
