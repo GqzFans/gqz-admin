@@ -3,11 +3,13 @@ package me.gqz.service.impl;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.constant.SystemBaseConstants;
 import me.gqz.core.exception.BusinessException;
+import me.gqz.core.utils.CommUsualUtils;
 import me.gqz.domain.UacUser;
 import me.gqz.domain.UacUserRegisterLog;
 import me.gqz.enums.UacExceptionEnums;
 import me.gqz.mapper.UacUserMapper;
 import me.gqz.mapper.UacUserRegisterLogMapper;
+import me.gqz.model.dto.req.UacChangePasswordReqDTO;
 import me.gqz.model.dto.req.UacRegisterReqDTO;
 import me.gqz.service.UacRegisterService;
 import me.gqz.utils.PasswordUtils;
@@ -71,6 +73,46 @@ public class UacRegisterServiceImpl implements UacRegisterService {
         uacUserRegisterLog.setMail(uacRegisterReqDTO.getMail());
         uacUserRegisterLogMapper.insert(uacUserRegisterLog);
         return insertUacUserCount;
+    }
+
+    /**
+     * <p>Title: changePassword. </p>
+     * <p>用户修改密码 </p>
+     * @param changePasswordReqDTO
+     * @author dragon
+     * @date 2018/7/24 上午10:31
+     * @return Boolean
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean changePassword(UacChangePasswordReqDTO changePasswordReqDTO) {
+        UacUser user = new UacUser();
+        user.setSerialNo(changePasswordReqDTO.getSerialNo());
+        user = uacUserMapper.selectOne(user);
+        if (CommUsualUtils.isOEmptyOrNull(user)) {
+            throw new BusinessException("获取用户信息为空");
+        }
+        // 获取原始密码，加密用户填写原始密码，进行校验
+        Integer version = user.getVersion();
+        String getUserLoginPwd = user.getLoginPwd();
+        String loginPwd = PasswordUtils.encodeByAES(changePasswordReqDTO.getLoginPwd());
+        if (getUserLoginPwd.equals(loginPwd)) {
+            log.warn("密码校验正确，用户可以修改密码");
+            // 加密新密码
+            String newLoginPwd = PasswordUtils.encodeByAES(changePasswordReqDTO.getNewLoginPwd());
+            user.setLoginPwd(newLoginPwd);
+            user.setVersion(++version);
+            user.setUpdateTime(new Date());
+            Integer count = uacUserMapper.updateByPrimaryKey(user);
+            if (count == 1) {
+                return true;
+            } else {
+                throw new BusinessException("密码修改失败，请重试");
+            }
+        } else {
+            log.error("密码校验失败，输入的原始密码错误！");
+            throw new BusinessException("您输入的原始密码错误，请重试");
+        }
     }
 
     /**

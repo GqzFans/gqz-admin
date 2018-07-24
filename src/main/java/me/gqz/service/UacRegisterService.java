@@ -1,6 +1,7 @@
 package me.gqz.service;
 
 
+import me.gqz.model.dto.req.UacChangePasswordReqDTO;
 import me.gqz.model.dto.req.UacRegisterReqDTO;
 
 /**
@@ -20,4 +21,14 @@ public interface UacRegisterService {
      * @return java.lang.Integer
      */
     Integer doRegister(UacRegisterReqDTO uacRegisterReqDTO);
+
+    /**
+     * <p>Title: changePassword. </p>
+     * <p>用户修改密码 </p>
+     * @param changePasswordReqDTO
+     * @author dragon
+     * @date 2018/7/24 上午10:31
+     * @return Boolean
+     */
+    Boolean changePassword(UacChangePasswordReqDTO changePasswordReqDTO);
 }
