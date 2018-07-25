@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -47,5 +48,17 @@ public class FeedbackServiceImpl extends BaseService<GqzAppFeedback> implements 
         } else {
             throw new BusinessException("反馈提交失败");
         }
+    }
+
+    /**
+     * <p>Title: queryFeedback. </p>
+     * <p>查询意见反馈列表 </p>
+     * @author dragon
+     * @date 2018/7/25 下午12:42
+     * @return List<GqzAppFeedback>
+     */
+    @Override
+    public List<GqzAppFeedback> queryFeedback() {
+        return feedbackMapper.selectAll();
     }
 }

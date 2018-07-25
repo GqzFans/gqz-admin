@@ -3,6 +3,8 @@ package me.gqz.service;
 import me.gqz.domain.GqzAppFeedback;
 import me.gqz.model.dto.req.InsertGqzFeedbackReqDTO;
 
+import java.util.List;
+
 /**
  * <p>Title: FeedbackService. </p>
  * <p>Description 小程序意见反馈Service </p>
@@ -19,4 +21,13 @@ public interface FeedbackService extends IService<GqzAppFeedback> {
      * @return Boolean
      */
     Boolean submitFeedback(InsertGqzFeedbackReqDTO insertGqzFeedbackReqDTO);
+
+    /**
+     * <p>Title: queryFeedback. </p>
+     * <p>查询意见反馈列表 </p>
+     * @author dragon
+     * @date 2018/7/25 下午12:42
+     * @return List<GqzAppFeedback>
+     */
+    List<GqzAppFeedback> queryFeedback();
 }
