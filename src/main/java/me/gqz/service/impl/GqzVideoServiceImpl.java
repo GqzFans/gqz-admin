@@ -170,4 +170,16 @@ public class GqzVideoServiceImpl extends BaseService<GqzAppVideo> implements Gqz
     public List<GqzAppVideo> appGetGqzVideoList() {
         return videoMapper.appGetGqzVideoList();
     }
+
+    /**
+     * <p>Title: queryThisMonthUploadCount. </p>
+     * <p>获取本月新增数据数量 </p>
+     * @author dragon
+     * @date 2018/7/27 下午1:48
+     * @return Integer
+     */
+    @Override
+    public Integer queryThisMonthUploadCount() {
+        return videoMapper.queryThisMonthUploadCount();
+    }
 }

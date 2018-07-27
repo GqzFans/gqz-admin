@@ -5,6 +5,7 @@ import me.gqz.core.utils.DoubleUtils;
 import me.gqz.domain.GqzAppEmoticon;
 import me.gqz.domain.GqzAppImage;
 import me.gqz.domain.GqzAppVersion;
+import me.gqz.domain.GqzAppVideo;
 import me.gqz.mapper.GqzAppVersionMapper;
 import me.gqz.mapper.UacUserLoginLogMapper;
 import me.gqz.model.dto.res.RecentUserLogResDTO;
@@ -12,6 +13,7 @@ import me.gqz.model.vo.DashBoardDataStatisticsVO;
 import me.gqz.service.GqzDashBoardService;
 import me.gqz.service.GqzEmoticonService;
 import me.gqz.service.GqzImageService;
+import me.gqz.service.GqzVideoService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -33,6 +35,8 @@ public class GqzDashBoardServiceImpl implements GqzDashBoardService {
     private GqzImageService imageService;
     @Resource
     private GqzEmoticonService emoticonService;
+    @Resource
+    private GqzVideoService videoService;
     @Resource
     private GqzAppVersionMapper appVersionMapper;
 
@@ -81,8 +85,16 @@ public class GqzDashBoardServiceImpl implements GqzDashBoardService {
         }
         dataStatisticsVO.setGqzEmoticonCount(emoticonTotalCount);
         // 视频相关数据
-        dataStatisticsVO.setGqzVideoCount(0);
-        dataStatisticsVO.setUploadVideoMonthPercentage(0.0);
+        GqzAppVideo appVideo = new GqzAppVideo();
+        int videoTotalCount = videoService.selectCount(appVideo);
+        Integer videoThisMonthCount = videoService.queryThisMonthUploadCount();
+        if (videoTotalCount != 0) {
+            Double uploadVideoMonthPercentage = DoubleUtils.div(videoThisMonthCount, videoTotalCount);
+            dataStatisticsVO.setUploadVideoMonthPercentage(uploadVideoMonthPercentage);
+        } else {
+            dataStatisticsVO.setUploadVideoMonthPercentage(0.0);
+        }
+        dataStatisticsVO.setGqzVideoCount(videoTotalCount);
         return dataStatisticsVO;
     }
 
