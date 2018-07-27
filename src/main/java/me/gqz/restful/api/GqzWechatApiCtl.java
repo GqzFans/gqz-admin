@@ -13,11 +13,13 @@ import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
 import me.gqz.domain.GqzAppEmoticon;
 import me.gqz.domain.GqzAppImage;
+import me.gqz.domain.GqzAppVideo;
 import me.gqz.model.dto.req.InsertGqzFeedbackReqDTO;
 import me.gqz.restful.BaseController;
 import me.gqz.service.FeedbackService;
 import me.gqz.service.GqzEmoticonService;
 import me.gqz.service.GqzImageService;
+import me.gqz.service.GqzVideoService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +45,8 @@ public class GqzWechatApiCtl extends BaseController {
     private GqzImageService imageService;
     @Resource
     private GqzEmoticonService emoticonService;
-
+    @Resource
+    private GqzVideoService videoService;
     
     /**
      * <p>Title: submitFeedback. </p>
@@ -124,6 +127,34 @@ public class GqzWechatApiCtl extends BaseController {
             return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
         } catch (Exception ex) {
             log.error("小程序查询表情包列表分页查询出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * <p>Title: appGetGqzVideoList. </p>
+     * <p>小程序查询视频列表分页接口 </p>
+     * @param page
+     * @author dragon
+     * @date 2018/7/26 下午10:09
+     * @return Wrapper<PageInfo<GqzAppVideo>>
+     */
+    @BusinessLog(logInfo = "小程序查询视频列表分页接口")
+    @ResponseBody
+    @RequestMapping(value = "/appGetGqzVideoList", method = {RequestMethod.POST})
+    @ApiOperation(value = "小程序查询视频列表分页接口", httpMethod = "POST", notes = "返回小程序查询视频列表分页查询")
+    public Wrapper<PageInfo<GqzAppVideo>> appGetGqzVideoList(@ApiParam(name = "page", value = "视频列表分页参数") @RequestBody Page<Object> page) {
+        try {
+            log.info("小程序查询视频列表分页查询 ==> {}", page);
+            PageHelper.startPage(page.getPageNum(), page.getPageSize());
+            List<GqzAppVideo> list = videoService.appGetGqzVideoList();
+            PageInfo<GqzAppVideo> pageInfo = new PageInfo<>(list);
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, pageInfo);
+        } catch (BusinessException ex) {
+            log.error("小程序查询视频列表分页查询出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
+        } catch (Exception ex) {
+            log.error("小程序查询视频列表分页查询出错：{}", ex.getMessage(), ex);
             return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
         }
     }

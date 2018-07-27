@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.gqz.mapper.GqzAppVideoMapper" >
+  <resultMap id="BaseResultMap" type="me.gqz.domain.GqzAppVideo" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="video_url" property="videoUrl" jdbcType="VARCHAR" />
+    <result column="video_vid" property="videoVid" jdbcType="VARCHAR" />
+    <result column="video_type" property="videoType" jdbcType="VARCHAR" />
+    <result column="video_title" property="videoTitle" jdbcType="VARCHAR" />
+    <result column="video_status" property="videoStatus" jdbcType="VARCHAR" />
+    <result column="create_user_id" property="createUserId" jdbcType="VARCHAR" />
+    <result column="create_user_name" property="createUserName" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_user_id" property="updateUserId" jdbcType="VARCHAR" />
+    <result column="update_user_name" property="updateUserName" jdbcType="VARCHAR" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="version" property="version" jdbcType="INTEGER" />
+  </resultMap>
+
+  <!-- 视频管理分页列表查询 -->
+  <select id="queryGqzVideoList" parameterType="me.gqz.model.dto.req.QueryGqzVideoReqDTO"
+          resultType="me.gqz.domain.GqzAppVideo">
+    SELECT
+    id, video_url, video_vid, video_type, video_title, create_user_name, create_time, video_status, version
+    FROM
+    gqz_app_video
+    WHERE
+    1=1
+    <if test="beginDate !=null and beginDate !=''">
+      AND create_time <![CDATA[ >= ]]> #{beginDate}
+    </if>
+    <if test="endDate !=null and endDate !=''">
+      AND create_time <![CDATA[ <= ]]> #{endDate}
+    </if>
+    <if test="createUserName !=null and createUserName !=''">
+      AND create_user_name LIKE concat('%',#{createUserName},'%')
+    </if>
+    ORDER BY create_time DESC
+  </select>
+
+
+  <!-- 视频管理下架视频 -->
+  <update id="dropVideoById" parameterType="me.gqz.domain.GqzAppVideo">
+    update `gqz_app_video`
+    <set>
+      <if test="videoStatus != null and videoStatus!= ''">
+        video_status = #{videoStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 视频管理上架视频 -->
+  <update id="upVideoById" parameterType="me.gqz.domain.GqzAppVideo">
+    update `gqz_app_video`
+    <set>
+      <if test="videoStatus != null and videoStatus!= ''">
+        video_status = #{videoStatus, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserId != null and updateUserId!= ''">
+        update_user_id = #{updateUserId, jdbcType=VARCHAR},
+      </if>
+      <if test="updateUserName != null and updateUserName!= ''">
+        update_user_name = #{updateUserName, jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime, jdbcType=TIMESTAMP},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 小程序查询视频列表分页查询 -->
+  <select id="appGetGqzVideoList" resultType="me.gqz.domain.GqzAppVideo">
+    SELECT
+    id, video_url, video_vid, video_type, video_title
+    FROM
+    gqz_app_video
+    WHERE
+    video_status = '1'
+    ORDER BY create_time DESC
+  </select>
+</mapper>

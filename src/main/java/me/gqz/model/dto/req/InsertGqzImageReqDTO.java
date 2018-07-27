@@ -18,6 +18,7 @@ import java.util.List;
 @ApiModel(value = "资源站添加图片请求DTO")
 public class InsertGqzImageReqDTO implements Serializable {
 
+    private static final long serialVersionUID = 5692908226147119124L;
     @ApiModelProperty(value = "图片说明文案")
     private String imageDescription;
 
