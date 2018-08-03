@@ -222,16 +222,16 @@ public class GqzTencentWsDataCtl extends BaseController {
             }
             List<GqzTencentWsDataLog> list = wsDataLogService.getWsDataLogByWsId(id);
             // 数据类型转换
-            List<String> dateDescriptionList = new ArrayList<>();
-            List<Integer> wsPlayNumList = new ArrayList<>();
+            List<String> dateDescriptionList = new LinkedList<>();
+            List<Integer> wsPlayNumList = new LinkedList<>();
             for (GqzTencentWsDataLog wsDataLog : list) {
                 String dateDescription = wsDataLog.getWorkerDateDescription();
                 Integer wsPlayNum = wsDataLog.getWsPlayNum();
                 dateDescriptionList.add(dateDescription);
                 wsPlayNumList.add(wsPlayNum);
             }
-            String[] dateDescriptionArray = (String[]) dateDescriptionList.toArray();
-            Integer[] wsPlayNumArray = (Integer[]) wsPlayNumList.toArray();
+            Object[] dateDescriptionArray = dateDescriptionList.toArray();
+            Object[] wsPlayNumArray = wsPlayNumList.toArray();
             Map<String, Object> map = new HashMap<>(list.size());
             map.put("date", dateDescriptionArray);
             map.put("playNum", wsPlayNumArray);
