@@ -27,8 +27,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.Iterator;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 
 /**
@@ -221,7 +221,21 @@ public class GqzTencentWsDataCtl extends BaseController {
                 throw new BusinessException("参数不能为空");
             }
             List<GqzTencentWsDataLog> list = wsDataLogService.getWsDataLogByWsId(id);
-            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, list);
+            // 数据类型转换
+            List<String> dateDescriptionList = new ArrayList<>();
+            List<Integer> wsPlayNumList = new ArrayList<>();
+            for (GqzTencentWsDataLog wsDataLog : list) {
+                String dateDescription = wsDataLog.getWorkerDateDescription();
+                Integer wsPlayNum = wsDataLog.getWsPlayNum();
+                dateDescriptionList.add(dateDescription);
+                wsPlayNumList.add(wsPlayNum);
+            }
+            String[] dateDescriptionArray = (String[]) dateDescriptionList.toArray();
+            Integer[] wsPlayNumArray = (Integer[]) wsPlayNumList.toArray();
+            Map<String, Object> map = new HashMap<>(list.size());
+            map.put("date", dateDescriptionArray);
+            map.put("playNum", wsPlayNumArray);
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, map);
         } catch (BusinessException ex) {
             log.error("通过短视频ID获取数据分析日志出错：{}", ex.getMessage(), ex);
             return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
