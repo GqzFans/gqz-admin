@@ -43,4 +43,35 @@ public interface GqzTencentWsDataService extends IService<GqzTencentWsData>  {
      * @return Boolean
      */
     Boolean deleteWsDataById(OperateGqzWsDataReqDTO operateGqzWsDataReqDTO);
+
+    /**
+     * <p>Title: upWsDataWorkerListenerById. </p>
+     * <p>开启数据统计 </p>
+     * @param operateGqzWsDataReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/8/3 下午5:57
+     * @return Boolean
+     */
+    Boolean upWsDataWorkerListenerById(OperateGqzWsDataReqDTO operateGqzWsDataReqDTO, AuthUserDTO authUser);
+
+    /**
+     * <p>Title: upWsDataWorkerListenerById. </p>
+     * <p>关闭数据统计 </p>
+     * @param operateGqzWsDataReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/8/3 下午5:57
+     * @return Boolean
+     */
+    Boolean dropWsDataWorkerListenerById(OperateGqzWsDataReqDTO operateGqzWsDataReqDTO, AuthUserDTO authUser);
+
+    /**
+     * <p>Title: getStartWsData. </p>
+     * <p>查询开启数据统计的微视短视频集合 </p>
+     * @author dragon
+     * @date 2018/8/3 下午10:22
+     * @return List<GqzTencentWsData>
+     */
+    List<GqzTencentWsData> getStartWsData();
 }

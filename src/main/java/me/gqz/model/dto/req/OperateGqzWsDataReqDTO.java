@@ -16,11 +16,13 @@ import java.io.Serializable;
 @ApiModel(value = "数据站操作微视数据分析请求DTO")
 public class OperateGqzWsDataReqDTO implements Serializable {
 
-    private static final long serialVersionUID = -4221261606371327328L;
-
+    private static final long serialVersionUID = -3884105078442043565L;
     @ApiModelProperty(value = "微视分析ID")
     private String id;
 
     @ApiModelProperty(value = "版本号")
     private Integer version;
+
+    @ApiModelProperty(value = "开启或关闭数据统计操作符")
+    private String model;
 }

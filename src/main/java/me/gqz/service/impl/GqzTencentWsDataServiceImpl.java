@@ -54,7 +54,7 @@ public class GqzTencentWsDataServiceImpl extends BaseService<GqzTencentWsData> i
         wsData.setCreateUserId(userId);
         wsData.setCreateUserName(nickName);
         wsData.setCreateTime(new Date());
-        wsData.setWorkerListenerStatus(0);
+        wsData.setWorkerListenerStatus(Integer.parseInt(SystemBaseConstants.N));
         wsData.setWsVideoId(wsVideoId);
         wsData.setWsVideoTitle(wsVideoTitle);
         wsData.setWsVideoUrl(wsVideoUrl);
@@ -99,5 +99,63 @@ public class GqzTencentWsDataServiceImpl extends BaseService<GqzTencentWsData> i
         } else {
             throw new BusinessException("删除微视数据分析失败");
         }
+    }
+
+    /**
+     * <p>Title: upWsDataWorkerListenerById. </p>
+     * <p>开启数据统计 </p>
+     * @param operateGqzWsDataReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/8/3 下午5:57
+     * @return Boolean
+     */
+    @Override
+    public Boolean upWsDataWorkerListenerById(OperateGqzWsDataReqDTO operateGqzWsDataReqDTO, AuthUserDTO authUser) {
+        GqzTencentWsData wsData = new GqzTencentWsData();
+        wsData.setId(operateGqzWsDataReqDTO.getId());
+        wsData.setVersion(operateGqzWsDataReqDTO.getVersion());
+        wsData.setWorkerListenerStatus(Integer.parseInt(SystemBaseConstants.Y));
+        Integer count = wsDataMapper.upWsDataWorkerListenerById(wsData);
+        if (1 == count) {
+            return true;
+        } else {
+            throw new BusinessException("开启数据统计失败");
+        }
+    }
+
+    /**
+     * <p>Title: upWsDataWorkerListenerById. </p>
+     * <p>关闭数据统计 </p>
+     * @param operateGqzWsDataReqDTO
+     * @param authUser
+     * @author dragon
+     * @date 2018/8/3 下午5:57
+     * @return Boolean
+     */
+    @Override
+    public Boolean dropWsDataWorkerListenerById(OperateGqzWsDataReqDTO operateGqzWsDataReqDTO, AuthUserDTO authUser) {
+        GqzTencentWsData wsData = new GqzTencentWsData();
+        wsData.setId(operateGqzWsDataReqDTO.getId());
+        wsData.setVersion(operateGqzWsDataReqDTO.getVersion());
+        wsData.setWorkerListenerStatus(Integer.parseInt(SystemBaseConstants.N));
+        Integer count = wsDataMapper.dropWsDataWorkerListenerById(wsData);
+        if (1 == count) {
+            return true;
+        } else {
+            throw new BusinessException("关闭数据统计失败");
+        }
+    }
+
+    /**
+     * <p>Title: getStartWsData. </p>
+     * <p>查询开启数据统计的微视短视频集合 </p>
+     * @author dragon
+     * @date 2018/8/3 下午10:22
+     * @return List<GqzTencentWsData>
+     */
+    @Override
+    public List<GqzTencentWsData> getStartWsData() {
+        return wsDataMapper.getStartWsData();
     }
 }

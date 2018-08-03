@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="me.gqz.mapper.GqzTencentWsDataLogMapper" >
+  <resultMap id="BaseResultMap" type="me.gqz.domain.GqzTencentWsDataLog" >
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="ws_video_id" property="wsVideoId" jdbcType="VARCHAR" />
+    <result column="worker_date" property="workerDate" jdbcType="TIMESTAMP" />
+    <result column="worker_date_description" property="workerDateDescription" jdbcType="VARCHAR" />
+    <result column="ws_play_num" property="wsPlayNum" jdbcType="INTEGER" />
+  </resultMap>
+
+  <select id="getWsDataLogByWsId" parameterType="java.lang.String" resultType="me.gqz.domain.GqzTencentWsDataLog">
+    SELECT
+	ws_video_id, worker_date_description, ws_play_num
+	FROM
+	gqz_tencent_ws_data_log
+	WHERE
+	ws_video_id = #{id}
+	ORDER BY worker_date ASC
+  </select>
+</mapper>

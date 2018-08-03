@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.annotation.BusinessLog;
+import me.gqz.constant.SystemBaseConstants;
 import me.gqz.core.base.Page;
 import me.gqz.core.exception.BusinessException;
 import me.gqz.core.model.dto.AuthUserDTO;
@@ -14,9 +15,11 @@ import me.gqz.core.utils.CommUsualUtils;
 import me.gqz.core.wrap.WrapMapper;
 import me.gqz.core.wrap.Wrapper;
 import me.gqz.domain.GqzTencentWsData;
+import me.gqz.domain.GqzTencentWsDataLog;
 import me.gqz.model.dto.req.InsertGqzWsDataReqDTO;
 import me.gqz.model.dto.req.OperateGqzWsDataReqDTO;
 import me.gqz.model.vo.GqzTencentWsDataVO;
+import me.gqz.service.GqzTencentWsDataLogService;
 import me.gqz.service.GqzTencentWsDataService;
 import me.gqz.utils.BeanListUtils;
 import me.gqz.utils.TencentWsPlayNumUtil;
@@ -24,7 +27,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class GqzTencentWsDataCtl extends BaseController {
 
     @Resource
     private GqzTencentWsDataService wsDataService;
+    @Resource
+    private GqzTencentWsDataLogService wsDataLogService;
 
     /**
      * <p>Title: addGqzWsData. </p>
@@ -149,6 +153,80 @@ public class GqzTencentWsDataCtl extends BaseController {
             return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
         } catch (Exception ex) {
             log.error("数据站微视数据分析删除出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
+        }
+    }
+
+
+    /**
+     * <p>Title: operateWsDataWorkerListenerById. </p>
+     * <p>开启或关闭数据统计 </p>
+     * @param operateGqzWsDataReqDTO
+     * @author dragon
+     * @date 2018/8/3 下午5:55
+     * @return result
+     */
+    @BusinessLog(logInfo = "开启或关闭数据统计")
+    @ResponseBody
+    @RequestMapping(value = "/operateWsDataWorkerListenerById", method = {RequestMethod.POST})
+    @ApiOperation(value = "开启或关闭数据统计", httpMethod = "POST", notes = "返回开启或关闭数据统计结果")
+    public Wrapper<?> operateWsDataById(@ApiParam(name = "operateGqzWsDataReqDTO", value = "操作参数") @RequestBody OperateGqzWsDataReqDTO operateGqzWsDataReqDTO) {
+        Boolean result;
+        try {
+            String model = operateGqzWsDataReqDTO.getModel();
+            String id = operateGqzWsDataReqDTO.getId();
+            Integer version = operateGqzWsDataReqDTO.getVersion();
+            if (CommUsualUtils.isSEmptyOrNull(id) || CommUsualUtils.isOEmptyOrNull(version) || CommUsualUtils.isSEmptyOrNull(model)) {
+                throw new BusinessException("参数不能为空");
+            }
+            AuthUserDTO authUser = getAuthUserByToken();
+            if (CommUsualUtils.isOEmptyOrNull(authUser)) {
+                throw new BusinessException("获取用户信息失败");
+            }
+            if (SystemBaseConstants.UP.equals(model)) {
+                log.warn("开启数据统计：ID = {}", id);
+                result = wsDataService.upWsDataWorkerListenerById(operateGqzWsDataReqDTO, authUser);
+            } else if (SystemBaseConstants.DROP.equals(model)) {
+                log.warn("关闭数据统计：ID = {}", id);
+                result = wsDataService.dropWsDataWorkerListenerById(operateGqzWsDataReqDTO, authUser);
+            } else {
+                throw new BusinessException("操作非法");
+            }
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, result);
+        } catch (BusinessException ex) {
+            log.error("开启或关闭数据统计出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
+        } catch (Exception ex) {
+            log.error("开启或关闭数据统计出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
+        }
+    }
+
+
+    /**
+     * <p>Title: getWsDataLog. </p>
+     * <p>通过短视频ID获取数据分析日志 </p>
+     * @param id
+     * @author dragon
+     * @date 2018/8/3 下午11:24
+     * @return result
+     */
+    @BusinessLog(logInfo = "通过短视频ID获取数据分析日志")
+    @ResponseBody
+    @RequestMapping(value = "/getWsDataLogByWsId/{id}", method = RequestMethod.POST)
+    @ApiOperation(value = "通过短视频ID获取数据分析日志", httpMethod = "POST", notes = "返回开启或关闭数据统计结果")
+    public Wrapper<?> getWsDataLogByWsId(@ApiParam(name = "id", value = "微视短视频参数") @PathVariable String id) {
+        try {
+            if (CommUsualUtils.isSEmptyOrNull(id)) {
+                throw new BusinessException("参数不能为空");
+            }
+            List<GqzTencentWsDataLog> list = wsDataLogService.getWsDataLogByWsId(id);
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, Wrapper.SUCCESS_MESSAGE, list);
+        } catch (BusinessException ex) {
+            log.error("通过短视频ID获取数据分析日志出错：{}", ex.getMessage(), ex);
+            return WrapMapper.wrap(Wrapper.ERROR_CODE, ex.getMessage());
+        } catch (Exception ex) {
+            log.error("通过短视频ID获取数据分析日志出错：{}", ex.getMessage(), ex);
             return WrapMapper.wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
         }
     }

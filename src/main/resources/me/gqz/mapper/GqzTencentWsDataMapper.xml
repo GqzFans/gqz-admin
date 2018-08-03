@@ -12,4 +12,38 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
+
+  <!-- 开启数据统计 -->
+  <update id="upWsDataWorkerListenerById" parameterType="me.gqz.domain.GqzTencentWsData">
+    update `gqz_tencent_ws_data`
+    <set>
+      <if test="workerListenerStatus != null and workerListenerStatus!= ''">
+        worker_listener_status = #{workerListenerStatus, jdbcType=VARCHAR},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 关闭数据统计 -->
+  <update id="dropWsDataWorkerListenerById" parameterType="me.gqz.domain.GqzTencentWsData">
+    update `gqz_tencent_ws_data`
+    <set>
+      <if test="workerListenerStatus != null and workerListenerStatus!= ''">
+        worker_listener_status = #{workerListenerStatus, jdbcType=VARCHAR},
+      </if>
+      version = version + 1
+    </set>
+    where id = #{id,jdbcType=VARCHAR} and version = #{version}
+  </update>
+
+  <!-- 查询开启数据统计的微视短视频集合 -->
+  <select id="getStartWsData" resultType="me.gqz.domain.GqzTencentWsData">
+    SELECT
+    id, ws_video_id
+    FROM
+    gqz_tencent_ws_data
+    WHERE
+    worker_listener_status = 1
+  </select>
 </mapper>
