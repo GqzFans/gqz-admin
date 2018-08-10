@@ -76,7 +76,7 @@ public class GqzTencentWsDataServiceImpl extends BaseService<GqzTencentWsData> i
      */
     @Override
     public List<GqzTencentWsData> queryWsDataList() {
-        return wsDataMapper.selectAll();
+        return wsDataMapper.queryWsDataList();
     }
 
     /**

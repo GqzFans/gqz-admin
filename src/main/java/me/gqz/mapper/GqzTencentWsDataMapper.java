@@ -39,4 +39,13 @@ public interface GqzTencentWsDataMapper extends MyMapper<GqzTencentWsData> {
      * @return List<GqzTencentWsData>
      */
     List<GqzTencentWsData> getStartWsData();
+
+    /**
+     * <p>Title: queryWsDataList. </p>
+     * <p>查询分析列表 </p>
+     * @author dragon
+     * @date 2018/8/9 下午12:35
+     * @return List<GqzTencentWsData>
+     */
+    List<GqzTencentWsData> queryWsDataList();
 }

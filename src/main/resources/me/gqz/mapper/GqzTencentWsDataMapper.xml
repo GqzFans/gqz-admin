@@ -13,6 +13,14 @@
     <result column="version" property="version" jdbcType="INTEGER" />
   </resultMap>
 
+  <select id="queryWsDataList" resultType="me.gqz.domain.GqzTencentWsData">
+    SELECT
+    *
+    FROM
+    gqz_tencent_ws_data
+    ORDER BY create_time DESC
+  </select>
+
   <!-- 开启数据统计 -->
   <update id="upWsDataWorkerListenerById" parameterType="me.gqz.domain.GqzTencentWsData">
     update `gqz_tencent_ws_data`
