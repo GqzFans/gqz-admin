@@ -15,12 +15,13 @@ import java.util.List;
 public class BeanListUtils {
 
     /**
-     * <p>Title: . </p>
+     * <p>Title: copyTo. </p>
      * <p>复制集合 </p>
-     * @param
-     * @author 田冀广
+     * @param source
+     * @param destinationClass
+     * @author net
      * @Date 2018/3/4 15:15
-     * @return
+     * @return List<E>
      */
     public static <E> List<E> copyTo(List<?> source, Class<E> destinationClass) throws IllegalAccessException, InvocationTargetException, InstantiationException{
         if (source.size() == 0) {
