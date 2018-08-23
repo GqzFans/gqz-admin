@@ -32,15 +32,17 @@ public class WsDataSchedule {
     public void startWsDataListener() {
         List<GqzTencentWsData> wsDataList = wsDataService.getStartWsData();
         int workerTotalCount = wsDataList.size();
-        ExecutorService threadPool = Executors.newFixedThreadPool(workerTotalCount);
-        for (int i = 0; i < workerTotalCount; i++) {
-            final int current = i;
-            threadPool.execute(() -> {
-                String id = wsDataList.get(current).getWsVideoId();
-                log.info("当前时间 = {} -> 开始处理微视数据分析任务VID = {}", DatetimeUtils.getNowTimeYMDHMS(), id);
-                wsDataLogService.processWsData(id);
-            });
+        if (workerTotalCount > 0) {
+            ExecutorService threadPool = Executors.newFixedThreadPool(workerTotalCount);
+            for (int i = 0; i < workerTotalCount; i++) {
+                final int current = i;
+                threadPool.execute(() -> {
+                    String id = wsDataList.get(current).getWsVideoId();
+                    log.info("当前时间 = {} -> 开始处理微视数据分析任务VID = {}", DatetimeUtils.getNowTimeYMDHMS(), id);
+                    wsDataLogService.processWsData(id);
+                });
+            }
+            threadPool.shutdown();
         }
-        threadPool.shutdown();
     }
 }
