@@ -23,6 +23,7 @@ public class ThreadLocalMap {
     }
 
     private static class MapThreadLocal extends ThreadLocal<Map<String, Object>> {
+        @Override
         protected Map<String, Object> initialValue() {
             return new HashMap<String, Object>() {
                 private static final long serialVersionUID = 3637958959138295593L;

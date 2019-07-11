@@ -1,5 +1,6 @@
 package me.gqz.schedule;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import me.gqz.core.utils.DatetimeUtils;
 import me.gqz.domain.GqzTencentWsData;
@@ -10,8 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * <p>Title: WsDataSchedule. </p>
@@ -23,6 +23,10 @@ import java.util.concurrent.Executors;
 @Component
 public class WsDataSchedule {
 
+    private static final ThreadFactory threadFactory= new ThreadFactoryBuilder().setNameFormat("thread-pool-scheduled-ws-%d").build();
+    private static ThreadPoolExecutor threadPool = new ThreadPoolExecutor(1, 2,
+            0L, TimeUnit.MILLISECONDS, new LinkedBlockingQueue<>(), threadFactory);
+
     @Resource
     private GqzTencentWsDataService wsDataService;
     @Resource
@@ -33,7 +37,6 @@ public class WsDataSchedule {
         List<GqzTencentWsData> wsDataList = wsDataService.getStartWsData();
         int workerTotalCount = wsDataList.size();
         if (workerTotalCount > 0) {
-            ExecutorService threadPool = Executors.newFixedThreadPool(workerTotalCount);
             for (int i = 0; i < workerTotalCount; i++) {
                 final int current = i;
                 threadPool.execute(() -> {
@@ -42,7 +45,6 @@ public class WsDataSchedule {
                     wsDataLogService.processWsData(id);
                 });
             }
-            threadPool.shutdown();
         }
     }
 }

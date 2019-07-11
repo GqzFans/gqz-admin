@@ -19,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,7 +36,6 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping(value = "/api/uac/auth/token", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 @Api(value = "UacTokenCtl", tags = "用户账户中心TOKEN接口", description = "用户账户中心TOKEN接口", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-
 public class UacTokenCtl extends BaseController {
 
     @Resource
